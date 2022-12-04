@@ -1,0 +1,19 @@
+.root {
+    /* -fx-background-color: #202020; */
+    -fx-background-color: #0b2b37;
+}
+
+.label {
+    /* -fx-text-fill: #80bfff; */
+    -fx-text-fill: #afcfdb;
+}
+
+.button {
+    -fx-border-color: #afcfdb;
+    -fx-background-color: #0b2b37;
+    -fx-text-fill: #afcfdb;
+}
+
+.button:hover {
+    -fx-background-color: #0b2b37;
+}
