@@ -1,7 +1,5 @@
 package com.megabyte6.wordle.controller;
 
-import java.io.IOException;
-
 import com.megabyte6.wordle.App;
 
 import javafx.fxml.FXML;
@@ -16,7 +14,7 @@ public class StartController {
     @FXML
     public Button start;
 
-    public void start() throws IOException {
+    public void start() {
         App.switchScenes("Game.fxml");
     }
 
