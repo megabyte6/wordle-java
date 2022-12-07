@@ -1,7 +1,7 @@
 # wordle-java
 
 ## About
-wordle-java is a Wordle clone written in Java for my computer science class.
+`wordle-java` is a Wordle clone written in Java for my computer science class.
 
 ## How to run it.
 - Prerequisites:
