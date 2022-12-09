@@ -1,6 +1,6 @@
 package com.megabyte6.wordle.controller;
 
-import com.megabyte6.wordle.App;
+import com.megabyte6.wordle.model.Game;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -15,7 +15,7 @@ public class StartController {
     public Button start;
 
     public void start() {
-        App.switchScenes("Game.fxml");
+        new Game();
     }
 
 }
