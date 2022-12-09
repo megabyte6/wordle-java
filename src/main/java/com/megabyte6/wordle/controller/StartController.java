@@ -3,18 +3,27 @@ package com.megabyte6.wordle.controller;
 import com.megabyte6.wordle.model.Game;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.VBox;
 
 public class StartController {
 
     @FXML
-    public VBox root;
+    private VBox root;
 
     @FXML
-    public Button start;
+    private void keyPressed(KeyEvent event) {
+        switch (event.getCode()) {
+            case ENTER:
+                start();
+                break;
+            default:
+                break;
+        }
+    }
 
-    public void start() {
+    @FXML
+    private void start() {
         new Game();
     }
 
