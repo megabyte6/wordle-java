@@ -65,24 +65,24 @@ public class App extends Application {
         oldScene.setFill(BACKGROUND_COLOR);
 
         // Set up fade transitions.
-        FadeTransition oldSceneFadeIn = new FadeTransition(totalTransitionDuration.divide(2), oldRoot);
-        oldSceneFadeIn.setFromValue(1);
-        oldSceneFadeIn.setToValue(0);
+        FadeTransition oldSceneFadeOut = new FadeTransition(totalTransitionDuration.divide(2), oldRoot);
+        oldSceneFadeOut.setFromValue(1);
+        oldSceneFadeOut.setToValue(0);
 
-        FadeTransition newSceneFadeOut = new FadeTransition(totalTransitionDuration.divide(2), newRoot);
-        newSceneFadeOut.setFromValue(0);
-        newSceneFadeOut.setToValue(1);
+        FadeTransition newSceneFadeIn = new FadeTransition(totalTransitionDuration.divide(2), newRoot);
+        newSceneFadeIn.setFromValue(0);
+        newSceneFadeIn.setToValue(1);
 
         // Play transitions.
-        oldSceneFadeIn.setOnFinished(new EventHandler<ActionEvent>() {
+        oldSceneFadeOut.setOnFinished(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 // Swap scenes between transitions.
                 data.set("scene", newScene);
                 // Start the new scene's fade-in animation.
-                newSceneFadeOut.play();
+                newSceneFadeIn.play();
             };
         });
-        oldSceneFadeIn.play();
+        oldSceneFadeOut.play();
     }
 
 }
