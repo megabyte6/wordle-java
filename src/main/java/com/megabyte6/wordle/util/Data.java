@@ -10,20 +10,6 @@ public class Data {
     private final HashMap<String, HashMap<UUID, Consumer<Object>>> observers = new HashMap<>();
 
     /**
-     * @param key The key whose associated value is to be returned.
-     * @return    The value to which the specified key is mapped to, or
-     *            {@code null} if there is no property matching this key.
-     */
-    public Object get(String key) {
-        if (!data.containsKey(key)) {
-            System.err.println("WARNING: Attempted to get key that doesn't exist.");
-            Thread.dumpStack();
-            return null;
-        }
-        return data.get(key);
-    }
-
-    /**
      * Associates the specified value with the specified key. If there was
      * previously a property with that key, the value will not be replaced. Use
      * {@link #set(String, Object)} if you wish to change the value instead.
@@ -42,6 +28,20 @@ public class Data {
         data.put(key, value);
         observers.put(key, new HashMap<>());
         return true;
+    }
+
+    /**
+     * @param key The key whose associated value is to be returned.
+     * @return    The value to which the specified key is mapped to, or
+     *            {@code null} if there is no property matching this key.
+     */
+    public Object get(String key) {
+        if (!data.containsKey(key)) {
+            System.err.println("WARNING: Attempted to get key that doesn't exist.");
+            Thread.dumpStack();
+            return null;
+        }
+        return data.get(key);
     }
 
     /**
