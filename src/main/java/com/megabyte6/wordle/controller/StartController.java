@@ -4,12 +4,8 @@ import com.megabyte6.wordle.model.Game;
 
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.VBox;
 
 public class StartController {
-
-    @FXML
-    private VBox root;
 
     @FXML
     private void keyPressed(KeyEvent event) {
