@@ -1,6 +1,5 @@
 package com.megabyte6.wordle.controller;
 
-import com.megabyte6.wordle.App;
 import com.megabyte6.wordle.model.Game;
 
 import javafx.fxml.FXML;
@@ -8,16 +7,17 @@ import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.VBox;
 
 public class GameController {
 
-    private Game game = (Game) App.data.get("game");
+    private Game game = Game.getInstance();
 
     @FXML
-    private VBox root;
-    @FXML
     private GridPane gameBoard;
+
+    @FXML
+    private void init() {
+    }
 
     @FXML
     private void keyPressed(KeyEvent event) {
@@ -31,7 +31,7 @@ public class GameController {
         }
     }
 
-    public void setBox(String text, int row, int column) {
+    public void setBoxText(String text, int row, int column) {
         Label label = (Label) getNodeByPosition(row, column);
         label.setText(text);
     }
