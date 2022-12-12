@@ -1,20 +1,53 @@
 package com.megabyte6.wordle.util;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
 public class WordGenerator {
 
-    private LinkedList<String> words = new LinkedList<>();
-    private LinkedList<String> usedWords = new LinkedList<>();
+    private LinkedList<String> words;
+    private LinkedList<String> usedWords;
 
     public WordGenerator() {
-        getWordsFromFile();
+        words = readFile(new File("wordlist.txt"));
+        usedWords = new LinkedList<>();
     }
 
-    private void getWordsFromFile() {
-        // TODO: Open file and get words.
+    private LinkedList<String> readFile(File file) {
+        return readFile(file, false);
+    }
+
+    private LinkedList<String> readFile(File file, boolean printContent) {
+        LinkedList<String> content = new LinkedList<>();
+
+        BufferedReader reader;
+        try {
+            reader = new BufferedReader(new FileReader(file));
+
+            String line = "";
+            while ((line = reader.readLine()) != null) {
+                content.add(line);
+
+                if (printContent)
+                    System.out.println(line);
+            }
+
+        } catch (FileNotFoundException e) {
+            System.err.println("ERROR: '" + file.getPath() + "' not found.");
+            e.printStackTrace();
+
+        } catch (IOException e) {
+            System.err.println("ERROR: failed to read '" + file.getPath() + "'.");
+            e.printStackTrace();
+        }
+
+        return content;
     }
 
     public String generate() {
