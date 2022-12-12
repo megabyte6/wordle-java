@@ -20,7 +20,7 @@ public class StartController {
 
     @FXML
     private void start() {
-        new Game();
+        Game.getInstance().init();
     }
 
 }
