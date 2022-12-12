@@ -1,6 +1,7 @@
 package com.megabyte6.wordle;
 
 import java.io.IOException;
+import java.util.UUID;
 
 import com.megabyte6.wordle.util.Data;
 
@@ -19,7 +20,11 @@ public class App extends Application {
 
     public static final Color BACKGROUND_COLOR = Color.web("#0b2b37");
 
-    public static Data data = new Data();
+    public static final Data data = new Data();
+    public static UUID stage;
+    public static UUID scene;
+
+    private static UUID fadeScenes;
 
     public static void main(String[] args) {
         launch(args);
@@ -34,16 +39,16 @@ public class App extends Application {
 
         primaryStage.show();
 
-        data.add("stage", primaryStage);
-        data.add("scene", scene);
-        data.addObserver("scene", (val) -> {
+        App.stage = data.set(primaryStage);
+        App.scene = data.set(scene);
+        data.addObserver(App.scene, (val) -> {
             Scene newScene = (Scene) val;
-            Stage stage = (Stage) data.get("stage");
-            if ((Boolean) data.get("fadeScenes"))
+            Stage stage = (Stage) data.get(App.stage);
+            if ((Boolean) data.get(App.fadeScenes))
                 newScene.getRoot().setOpacity(0);
             stage.setScene((Scene) newScene);
         });
-        data.add("fadeScenes", true);
+        fadeScenes = data.set(true);
     }
 
     public static void switchScenes(String fxmlFileName, Duration totalTransitionDuration) {
@@ -60,7 +65,7 @@ public class App extends Application {
         Parent newRoot = newScene.getRoot();
 
         // Get old scene.
-        Scene oldScene = (Scene) data.get("scene");
+        Scene oldScene = (Scene) data.get(App.scene);
         Parent oldRoot = oldScene.getRoot();
         oldScene.setFill(BACKGROUND_COLOR);
 
@@ -77,7 +82,7 @@ public class App extends Application {
         oldSceneFadeOut.setOnFinished(new EventHandler<ActionEvent>() {
             public void handle(ActionEvent event) {
                 // Swap scenes between transitions.
-                data.set("scene", newScene);
+                data.set(App.scene, newScene);
                 // Start the new scene's fade-in animation.
                 newSceneFadeIn.play();
             };
