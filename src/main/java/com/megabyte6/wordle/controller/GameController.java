@@ -16,7 +16,7 @@ public class GameController {
     private GridPane gameBoard;
 
     @FXML
-    private void init() {
+    private void initialize() {
     }
 
     @FXML
