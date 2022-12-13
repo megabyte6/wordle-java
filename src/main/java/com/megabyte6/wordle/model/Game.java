@@ -1,5 +1,6 @@
 package com.megabyte6.wordle.model;
 
+import com.megabyte6.wordle.controller.GameController;
 import com.megabyte6.wordle.util.SceneManager;
 
 import javafx.scene.input.KeyCode;
@@ -8,6 +9,7 @@ import javafx.util.Duration;
 public class Game {
 
     private static final Game instance;
+    private GameController controller;
 
     private char[][] gameBoard = new char[6][5];
     private int numberOfAttempts = 0;
@@ -25,6 +27,11 @@ public class Game {
 
     public void init() {
         SceneManager.switchScenes("Game.fxml", Duration.millis(500));
+        controller.initListeners();
+    }
+
+    public void setController(GameController controller) {
+        this.controller = controller;
     }
 
     public void typeKey(KeyCode key) {
