@@ -67,24 +67,27 @@ public class SceneManager {
                 SceneManager.stage.setScene(newScene);
                 // Start the new scene's fade-in animation.
                 newSceneFadeIn.play();
+
+                // Set the new scene as the main scene.
+                SceneManager.scene = newScene;
             };
         });
         oldSceneFadeOut.play();
     }
 
-    public Stage getStage() {
+    public static Stage getStage() {
         return SceneManager.stage;
     }
 
-    public Scene getScene() {
+    public static Scene getScene() {
         return SceneManager.scene;
     }
 
-    public Color getBackgroundColor() {
+    public static Color getBackgroundColor() {
         return SceneManager.backgroundColor;
     }
 
-    public void setBackgroundColor(Color color) {
+    public static void setBackgroundColor(Color color) {
         SceneManager.backgroundColor = color;
     }
 
