@@ -1,26 +1,22 @@
 package com.megabyte6.wordle.model;
 
-import java.util.UUID;
-
-import com.megabyte6.wordle.App;
+import com.megabyte6.wordle.util.SceneManager;
 
 import javafx.scene.input.KeyCode;
 import javafx.util.Duration;
 
 public class Game {
 
-    public static final UUID game;
-    private static Game instance;
+    private static final Game instance;
 
     private char[][] gameBoard = new char[6][5];
     private int numberOfAttempts = 0;
 
-    private Game() {
-    }
-
     static {
         instance = new Game();
-        game = App.data.set(instance);
+    }
+
+    private Game() {
     }
 
     public static Game getInstance() {
@@ -28,7 +24,7 @@ public class Game {
     }
 
     public void init() {
-        App.switchScenes("Game.fxml", Duration.millis(500));
+        SceneManager.switchScenes("Game.fxml", Duration.millis(500));
     }
 
     public void typeKey(KeyCode key) {

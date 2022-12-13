@@ -1,30 +1,16 @@
 package com.megabyte6.wordle;
 
-import java.io.IOException;
-import java.util.UUID;
+import com.megabyte6.wordle.util.SceneManager;
 
-import com.megabyte6.wordle.util.Data;
-
-import javafx.animation.FadeTransition;
 import javafx.application.Application;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.util.Duration;
 
 public class App extends Application {
 
     public static final Color BACKGROUND_COLOR = Color.web("#0b2b37");
-
-    public static final Data data = new Data();
-    public static UUID stage;
-    public static UUID scene;
-
-    private static UUID fadeScenes;
 
     public static void main(String[] args) {
         launch(args);
@@ -36,58 +22,9 @@ public class App extends Application {
 
         primaryStage.setTitle("Wordle");
         primaryStage.setScene(scene);
-
         primaryStage.show();
 
-        App.stage = data.set(primaryStage);
-        App.scene = data.set(scene);
-        data.addObserver(App.scene, (val) -> {
-            Scene newScene = (Scene) val;
-            Stage stage = (Stage) data.get(App.stage);
-            if ((Boolean) data.get(App.fadeScenes))
-                newScene.getRoot().setOpacity(0);
-            stage.setScene((Scene) newScene);
-        });
-        fadeScenes = data.set(true);
-    }
-
-    public static void switchScenes(String fxmlFileName, Duration totalTransitionDuration) {
-        // Load new scene.
-        Scene newScene;
-        try {
-            newScene = new Scene(FXMLLoader.load(App.class.getResource("view/" + fxmlFileName)));
-        } catch (IOException e) {
-            System.err.println("ERROR: Cannot read file");
-            e.printStackTrace();
-            return;
-        }
-        newScene.setFill(BACKGROUND_COLOR);
-        Parent newRoot = newScene.getRoot();
-
-        // Get old scene.
-        Scene oldScene = (Scene) data.get(App.scene);
-        Parent oldRoot = oldScene.getRoot();
-        oldScene.setFill(BACKGROUND_COLOR);
-
-        // Set up fade transitions.
-        FadeTransition oldSceneFadeOut = new FadeTransition(totalTransitionDuration.divide(2), oldRoot);
-        oldSceneFadeOut.setFromValue(1);
-        oldSceneFadeOut.setToValue(0);
-
-        FadeTransition newSceneFadeIn = new FadeTransition(totalTransitionDuration.divide(2), newRoot);
-        newSceneFadeIn.setFromValue(0);
-        newSceneFadeIn.setToValue(1);
-
-        // Play transitions.
-        oldSceneFadeOut.setOnFinished(new EventHandler<ActionEvent>() {
-            public void handle(ActionEvent event) {
-                // Swap scenes between transitions.
-                data.set(App.scene, newScene);
-                // Start the new scene's fade-in animation.
-                newSceneFadeIn.play();
-            };
-        });
-        oldSceneFadeOut.play();
+        SceneManager.init(primaryStage, scene, BACKGROUND_COLOR);
     }
 
 }
