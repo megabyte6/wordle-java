@@ -1,10 +1,10 @@
 package com.megabyte6.wordle.util;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -15,35 +15,37 @@ public class WordGenerator {
     private LinkedList<String> usedWords;
 
     public WordGenerator() {
-        words = readFile(new File("wordlist.txt"));
+        words = new LinkedList<>(readFile(
+                WordGenerator.class.getResource("/com/megabyte6/wordle/wordlist.txt")));
         usedWords = new LinkedList<>();
     }
 
-    private LinkedList<String> readFile(File file) {
-        return readFile(file, false);
+    private List<String> readFile(URL url) {
+        List<String> content = new LinkedList<>();
+        try {
+            content = readFile(Path.of(url.toURI()));
+        } catch (URISyntaxException e) {
+            System.err.println(
+                    "ERROR: URL is not formatted correctly and cannot be converted to a URI");
+            e.printStackTrace();
+        }
+        return content;
     }
 
-    private LinkedList<String> readFile(File file, boolean printContent) {
-        LinkedList<String> content = new LinkedList<>();
+    private List<String> readFile(Path path) {
+        return readFile(path, false);
+    }
 
-        BufferedReader reader;
+    private List<String> readFile(Path path, boolean printContent) {
+        List<String> content = new LinkedList<>();
+
         try {
-            reader = new BufferedReader(new FileReader(file));
+            content = Files.readAllLines(path);
 
-            String line = "";
-            while ((line = reader.readLine()) != null) {
-                content.add(line);
-
-                if (printContent)
-                    System.out.println(line);
-            }
-
-        } catch (FileNotFoundException e) {
-            System.err.println("ERROR: '" + file.getPath() + "' not found.");
-            e.printStackTrace();
-
+            if (printContent)
+                content.forEach(System.out::println);
         } catch (IOException e) {
-            System.err.println("ERROR: failed to read '" + file.getPath() + "'.");
+            System.err.println("ERROR: failed to read file.");
             e.printStackTrace();
         }
 
