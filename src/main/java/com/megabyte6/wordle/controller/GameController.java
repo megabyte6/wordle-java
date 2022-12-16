@@ -6,35 +6,49 @@ import com.megabyte6.wordle.util.SceneManager;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 
 public class GameController {
 
-    private final Game game = Game.getInstance();
+    private Game game = new Game(this);
 
+    @FXML
+    private StackPane root;
     @FXML
     private GridPane gameBoard;
 
     @FXML
     private void initialize() {
-        game.setController(this);
+        SceneManager.getScene().setOnKeyPressed((KeyEvent event) -> typeKey(event.getCode()));
     }
 
-    public void initListeners() {
-        SceneManager.getScene().setOnKeyPressed((KeyEvent event) -> {
-            switch (event.getCode()) {
-                case ENTER:
-                    game.checkWord();
-                    break;
-                default:
-                    game.typeKey(event.getCode());
-                    break;
-            }
-        });
+    private void typeKey(KeyCode key) {
+        if (key == KeyCode.BACK_SPACE) {
+            backspace();
+            return;
+        }
+        if (key == KeyCode.ENTER) {
+            if (game.checkWord())
+                winGame();
+            return;
+        }
+        if (game.cursorIsAtMaxIndex())
+            return;
+        game.incrementCursorIndex();
     }
 
-    public void setBoxText(String text, int row, int column) {
+    private void backspace() {
+        if (game.cursorIsAtMinIndex())
+            return;
+    }
+
+    private void winGame() {
+    }
+
+    private void setBoxText(String text, int row, int column) {
         Label label = (Label) getNodeByPosition(row, column);
         label.setText(text);
     }
