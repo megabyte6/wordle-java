@@ -1,14 +1,15 @@
 package com.megabyte6.wordle.controller;
 
-import com.megabyte6.wordle.model.Game;
+import com.megabyte6.wordle.util.SceneManager;
 
 import javafx.fxml.FXML;
+import javafx.util.Duration;
 
 public class StartController {
 
     @FXML
     private void start() {
-        Game.getInstance().init();
+        SceneManager.switchScenes("Game.fxml", Duration.millis(500));
     }
 
 }
