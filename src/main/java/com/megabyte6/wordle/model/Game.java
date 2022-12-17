@@ -17,6 +17,20 @@ public class Game {
         currentWord = wordGenerator.generate();
     }
 
+    public void setLetter(String value) {
+        if (value.length() > 0) {
+            setLetter(value.charAt(0));
+        } else {
+            setLetter('\u0000');
+        }
+    }
+
+    public void setLetter(char value) {
+        if (cursorIsAtMaxIndex())
+            return;
+        setGameBoard(attemptNum, cursorIndex, value);
+    }
+
     public boolean checkWord() {
         if (!getCurrentGuess().equals(currentWord))
             return false;
@@ -34,6 +48,8 @@ public class Game {
         if (row >= gameBoard.length || column >= gameBoard[row].length)
             return;
         gameBoard[row][column] = value;
+        String text = Character.toString(value).toUpperCase();
+        controller.setBoxText(text, row, column);
     }
 
     public int getAttemptNum() {
@@ -41,7 +57,7 @@ public class Game {
     }
 
     public void setAttemptNum(int value) {
-        if (value > gameBoard.length)
+        if (value < 0 || value > gameBoard.length)
             return;
         attemptNum = value;
     }
@@ -63,13 +79,17 @@ public class Game {
     }
 
     public void setCursorIndex(int value) {
-        if (value > gameBoard[attemptNum].length)
+        if (value < 0 || value > gameBoard[attemptNum].length)
             return;
         cursorIndex = value;
     }
 
     public void incrementCursorIndex() {
         setCursorIndex(cursorIndex + 1);
+    }
+
+    public void decrementCursorIndex() {
+        setCursorIndex(cursorIndex - 1);
     }
 
     public String getCurrentWord() {
