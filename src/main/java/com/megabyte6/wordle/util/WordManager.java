@@ -9,14 +9,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
 
-public class WordGenerator {
+public class WordManager {
 
     private LinkedList<String> words;
     private LinkedList<String> usedWords;
 
-    public WordGenerator() {
+    public WordManager() {
         words = new LinkedList<>(readFile(
-                WordGenerator.class.getResource("/com/megabyte6/wordle/words.txt")));
+                WordManager.class.getResource("/com/megabyte6/wordle/words.txt")));
         usedWords = new LinkedList<>();
     }
 
@@ -74,6 +74,12 @@ public class WordGenerator {
         return word;
     }
 
+    public boolean contains(String word) {
+        if (containsWord(word) || containsUsedWord(word))
+            return true;
+        return false;
+    }
+
     public String[] getWords() {
         return (String[]) words.toArray();
     }
@@ -96,6 +102,10 @@ public class WordGenerator {
         return words.remove(index);
     }
 
+    public boolean containsWord(String word) {
+        return words.contains(word);
+    }
+
     public String[] getUsedWords() {
         return (String[]) usedWords.toArray();
     }
@@ -116,6 +126,10 @@ public class WordGenerator {
 
     public String removeUsedWord(int index) {
         return usedWords.remove(index);
+    }
+
+    public boolean containsUsedWord(String word) {
+        return usedWords.contains(word);
     }
 
 }

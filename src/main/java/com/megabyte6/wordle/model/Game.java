@@ -1,12 +1,12 @@
 package com.megabyte6.wordle.model;
 
 import com.megabyte6.wordle.controller.GameController;
-import com.megabyte6.wordle.util.WordGenerator;
+import com.megabyte6.wordle.util.WordManager;
 
 public class Game {
 
     private GameController controller;
-    private WordGenerator wordGenerator = new WordGenerator();
+    private WordManager wordManager = new WordManager();
 
     private char[][] gameBoard = new char[6][5];
     private int attemptNum = 0, cursorIndex = 0;
@@ -14,7 +14,7 @@ public class Game {
 
     public Game(GameController controller) {
         this.controller = controller;
-        currentWord = wordGenerator.generate();
+        currentWord = wordManager.generate();
     }
 
     public void setLetter(String value) {
@@ -32,10 +32,16 @@ public class Game {
     }
 
     public boolean checkWord() {
+        if (!wordManager.contains(currentWord))
+            return false;
         if (!getCurrentGuess().equals(currentWord))
             return false;
         cursorIndex = 0;
         return true;
+    }
+
+    public String getCurrentGuess() {
+        return new String(gameBoard[attemptNum]);
     }
 
     public char[][] getGameBoard() {
@@ -97,11 +103,7 @@ public class Game {
     }
 
     public void generateNewWord() {
-        currentWord = wordGenerator.generate();
-    }
-
-    public String getCurrentGuess() {
-        return new String(gameBoard[attemptNum]);
+        currentWord = wordManager.generate();
     }
 
 }
