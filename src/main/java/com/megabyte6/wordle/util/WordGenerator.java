@@ -16,7 +16,7 @@ public class WordGenerator {
 
     public WordGenerator() {
         words = new LinkedList<>(readFile(
-                WordGenerator.class.getResource("/com/megabyte6/wordle/wordlist.txt")));
+                WordGenerator.class.getResource("/com/megabyte6/wordle/words.txt")));
         usedWords = new LinkedList<>();
     }
 
