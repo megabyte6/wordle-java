@@ -65,8 +65,10 @@ public class GameController implements Controller {
                 break;
 
             default:
+                // Cursor is at the end of the line.
                 if (game.cursorIsAtMaxIndex())
                     break;
+                // The key pressed isn't a letter.
                 if (!key.isLetterKey())
                     break;
 
