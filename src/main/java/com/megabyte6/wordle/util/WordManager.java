@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 public class WordManager {
 
@@ -15,8 +16,9 @@ public class WordManager {
     private LinkedList<String> usedWords;
 
     public WordManager() {
-        words = new LinkedList<>(readFile(
-                WordManager.class.getResource("/com/megabyte6/wordle/words.txt")));
+        words = readFile(WordManager.class.getResource("/com/megabyte6/wordle/words.txt")).stream()
+                .map(String::toLowerCase)
+                .collect(Collectors.toCollection(LinkedList::new));
         usedWords = new LinkedList<>();
     }
 

@@ -32,7 +32,7 @@ public class Game {
     }
 
     public boolean isWord(String word) {
-        return wordManager.contains(word);
+        return wordManager.contains(word.toLowerCase());
     }
 
     public boolean checkGuess() {
@@ -40,12 +40,11 @@ public class Game {
             return false;
         if (!getCurrentGuess().equals(currentWord))
             return false;
-        setCursorIndex(0);
         return true;
     }
 
     public String getCurrentGuess() {
-        return new String(gameBoard[attemptNum]);
+        return new String(gameBoard[attemptNum]).toLowerCase();
     }
 
     public char[][] getGameBoard() {
