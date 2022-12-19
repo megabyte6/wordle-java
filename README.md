@@ -36,3 +36,4 @@ This project uses the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Thanks
 This project uses [JavaFX](https://openjfx.io) as well as the [badass-jlink-plugin by beryx](https://github.com/beryx/badass-jlink-plugin).
+Thanks to fxexperience for the [CachedTimelineTransition](https://github.com/fxexperience/code/blob/master/FXExperienceControls/src/com/fxexperience/javafx/animation/CachedTimelineTransition.java) and [ShakeTransition](https://github.com/fxexperience/code/blob/master/FXExperienceControls/src/com/fxexperience/javafx/animation/ShakeTransition.java) code.
