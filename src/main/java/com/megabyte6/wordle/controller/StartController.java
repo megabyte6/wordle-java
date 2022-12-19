@@ -9,7 +9,7 @@ public class StartController implements Controller {
 
     @FXML
     private void start() {
-        SceneManager.switchScenes("Game.fxml", Duration.millis(500));
+        SceneManager.switchScenes("Game.fxml", Duration.millis(400));
     }
 
 }
