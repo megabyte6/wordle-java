@@ -40,18 +40,28 @@ public class GameController implements Controller {
     private void typeKey(KeyCode key) {
         switch (key) {
             case BACK_SPACE:
-                backspace();
+                // Nothing to delete
+                if (game.cursorIsAtMinIndex())
+                    break;
+                game.decrementCursorIndex();
+                game.setLetter("");
                 break;
 
             case ENTER:
+                // Cursor isn't at the end of the line.
                 if (!game.cursorIsAtMaxIndex())
                     break;
+                // Input isn't a word.
                 if (!game.isWord(game.getCurrentGuess())) {
                     inputNotValid();
                     break;
                 }
-                if (game.checkGuess())
+                // Guess is correct.
+                if (game.checkGuess()) {
+                    game.setCursorIndex(0);
                     winGame();
+                    break;
+                }
                 break;
 
             default:
@@ -65,13 +75,6 @@ public class GameController implements Controller {
         }
     }
 
-    private void backspace() {
-        if (game.cursorIsAtMinIndex())
-            return;
-        game.decrementCursorIndex();
-        game.setLetter("");
-    }
-
     private void inputNotValid() {
         getNodesByRow(game.getAttemptNum()).stream()
                 .forEach(node -> {
@@ -82,34 +85,6 @@ public class GameController implements Controller {
     }
 
     private void winGame() {
-    }
-
-    private void popup(String text) {
-        popup(text, millis(750), millis(200));
-    }
-
-    private void popup(String text, Duration pauseDuration, Duration transitionDuration) {
-        popup.setText(text);
-
-        final FadeTransition fadeIn = new FadeTransition();
-        fadeIn.setNode(popup);
-        fadeIn.setDuration(transitionDuration);
-        fadeIn.setFromValue(0);
-        fadeIn.setToValue(1);
-
-        final PauseTransition pause = new PauseTransition();
-        pause.setDuration(pauseDuration);
-
-        final FadeTransition fadeOut = new FadeTransition();
-        fadeOut.setNode(popup);
-        fadeOut.setDuration(transitionDuration);
-        fadeOut.setFromValue(1);
-        fadeOut.setToValue(0);
-
-        final SequentialTransition transition = new SequentialTransition();
-        transition.getChildren().addAll(fadeIn, pause, fadeOut);
-
-        transition.play();
     }
 
     public void setBoxText(String text, int row, int column) {
@@ -142,6 +117,34 @@ public class GameController implements Controller {
         return gameBoard.getChildren().stream()
                 .filter(node -> GridPane.getRowIndex(node) == rowValue)
                 .collect(Collectors.toList());
+    }
+
+    private void popup(String text) {
+        popup(text, millis(750), millis(200));
+    }
+
+    private void popup(String text, Duration pauseDuration, Duration transitionDuration) {
+        popup.setText(text);
+
+        final FadeTransition fadeIn = new FadeTransition();
+        fadeIn.setNode(popup);
+        fadeIn.setDuration(transitionDuration);
+        fadeIn.setFromValue(0);
+        fadeIn.setToValue(1);
+
+        final PauseTransition pause = new PauseTransition();
+        pause.setDuration(pauseDuration);
+
+        final FadeTransition fadeOut = new FadeTransition();
+        fadeOut.setNode(popup);
+        fadeOut.setDuration(transitionDuration);
+        fadeOut.setFromValue(1);
+        fadeOut.setToValue(0);
+
+        final SequentialTransition transition = new SequentialTransition();
+        transition.getChildren().addAll(fadeIn, pause, fadeOut);
+
+        transition.play();
     }
 
 }
