@@ -31,12 +31,16 @@ public class Game {
         setGameBoard(attemptNum, cursorIndex, value);
     }
 
-    public boolean checkWord() {
-        if (!wordManager.contains(currentWord))
+    public boolean isWord(String word) {
+        return wordManager.contains(word);
+    }
+
+    public boolean checkGuess() {
+        if (!isWord(getCurrentGuess()))
             return false;
         if (!getCurrentGuess().equals(currentWord))
             return false;
-        cursorIndex = 0;
+        setCursorIndex(0);
         return true;
     }
 
