@@ -1,10 +1,8 @@
 .root {
-    /* -fx-background-color: #202020; */
     -fx-background-color: #0b2b37;
 }
 
 .label {
-    /* -fx-text-fill: #80bfff; */
     -fx-text-fill: #afcfdb;
 }
 
