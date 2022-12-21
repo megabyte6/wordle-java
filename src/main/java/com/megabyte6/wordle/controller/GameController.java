@@ -1,5 +1,7 @@
 package com.megabyte6.wordle.controller;
 
+import static com.megabyte6.wordle.util.Range.range;
+
 import static javafx.util.Duration.millis;
 
 import java.util.List;
@@ -11,16 +13,27 @@ import com.megabyte6.wordle.util.SceneManager;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
+import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 public class GameController implements Controller {
+
+    private final Color CORRECT_COLOR = Color.web("#538d4e");
+    private final Color WRONG_SPOT_COLOR = Color.web("#b59f3b");
+    private final Color INCORRECT_COLOR = Color.web("#864d47");
+    private final CornerRadii CORNER_RADIUS = new CornerRadii(8);
 
     private Game game = new Game(this);
 
@@ -28,7 +41,6 @@ public class GameController implements Controller {
     private StackPane root;
     @FXML
     private GridPane gameBoard;
-
     @FXML
     private Label popup;
 
@@ -56,12 +68,15 @@ public class GameController implements Controller {
                     inputNotValid();
                     break;
                 }
+                // Show which letters are correct.
+                checkGuess();
                 // Guess is correct.
-                if (game.checkGuess()) {
-                    game.setCursorIndex(0);
+                if (game.guessIsCorrect()) {
                     winGame();
                     break;
                 }
+                game.incrementAttemptCount();
+                game.setCursorIndex(0);
                 break;
 
             default:
@@ -84,6 +99,50 @@ public class GameController implements Controller {
                     shake.play();
                 });
         popup("Not in word list");
+    }
+
+    private void checkGuess() {
+        String word = game.getCurrentWord();
+        String guess = game.getCurrentGuess();
+
+        RotateTransition[] rotateTransitions = new RotateTransition[guess.length()];
+
+        for (int i : range(guess.length())) {
+            Label cell = (Label) getNodeByPosition(game.getAttemptNum(), i);
+            BackgroundFill backgroundFill = new BackgroundFill(INCORRECT_COLOR, CORNER_RADIUS, null);
+
+            if (guess.charAt(i) == word.charAt(i)) {
+                backgroundFill = new BackgroundFill(CORRECT_COLOR, CORNER_RADIUS, null);
+            } else if (word.indexOf(guess.charAt(i)) != -1) {
+                backgroundFill = new BackgroundFill(WRONG_SPOT_COLOR, CORNER_RADIUS, null);
+            }
+
+            final Background background = new Background(backgroundFill);
+
+            RotateTransition rotate2 = new RotateTransition(millis(250), cell);
+            rotate2.setAxis(Rotate.X_AXIS);
+            rotate2.setByAngle(-90);
+
+            RotateTransition rotate1 = new RotateTransition(millis(250), cell);
+            rotate1.setAxis(Rotate.X_AXIS);
+            rotate1.setByAngle(90);
+            rotate1.setOnFinished((event) -> {
+                cell.setBackground(background);
+                rotate2.play();
+            });
+
+            rotateTransitions[i] = rotate1;
+        }
+
+        // Build animation.
+        SequentialTransition sequentialTransition = new SequentialTransition();
+        for (RotateTransition rotateTransition : rotateTransitions) {
+            sequentialTransition.getChildren().add(rotateTransition);
+            sequentialTransition.getChildren().add(new PauseTransition(millis(50)));
+        }
+
+        // Perform animation.
+        sequentialTransition.play();
     }
 
     private void winGame() {
