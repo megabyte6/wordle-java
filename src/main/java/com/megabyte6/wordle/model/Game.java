@@ -35,7 +35,7 @@ public class Game {
         return wordManager.contains(word.toLowerCase());
     }
 
-    public boolean checkGuess() {
+    public boolean guessIsCorrect() {
         if (!isWord(getCurrentGuess()))
             return false;
         if (!getCurrentGuess().equals(currentWord))
@@ -71,7 +71,7 @@ public class Game {
         attemptNum = value;
     }
 
-    public void incrementCurrentAttemptCount() {
+    public void incrementAttemptCount() {
         setAttemptNum(attemptNum + 1);
     }
 
