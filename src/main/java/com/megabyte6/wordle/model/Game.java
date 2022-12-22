@@ -32,7 +32,7 @@ public class Game {
     }
 
     public boolean isWord(String word) {
-        return wordManager.contains(word.toLowerCase());
+        return wordManager.isWord(word.toLowerCase());
     }
 
     public boolean guessIsCorrect() {
