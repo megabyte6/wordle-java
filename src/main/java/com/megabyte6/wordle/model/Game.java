@@ -66,7 +66,7 @@ public class Game {
     }
 
     public void setAttemptNum(int value) {
-        if (value < 0 || value > gameBoard.length)
+        if (value < 0 || value >= gameBoard.length)
             return;
         attemptNum = value;
     }
