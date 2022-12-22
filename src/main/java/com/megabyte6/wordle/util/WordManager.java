@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -12,13 +13,21 @@ import java.util.stream.Collectors;
 
 public class WordManager {
 
-    private LinkedList<String> words;
-    private LinkedList<String> usedWords;
+    private List<String> dictionary;
+    private List<String> words;
+    private List<String> usedWords;
 
     public WordManager() {
-        words = readFile(WordManager.class.getResource("/com/megabyte6/wordle/words.txt")).stream()
+        URL dictionaryResource = WordManager.class.getResource("/com/megabyte6/wordle/dictionary.txt");
+        dictionary = readFile(dictionaryResource).stream()
+                .map(String::toLowerCase)
+                .collect(Collectors.toCollection(ArrayList::new));
+
+        URL wordsResource = WordManager.class.getResource("/com/megabyte6/wordle/wordbank.txt");
+        words = readFile(wordsResource).stream()
                 .map(String::toLowerCase)
                 .collect(Collectors.toCollection(LinkedList::new));
+
         usedWords = new LinkedList<>();
     }
 
@@ -76,8 +85,8 @@ public class WordManager {
         return word;
     }
 
-    public boolean contains(String word) {
-        if (containsWord(word) || containsUsedWord(word))
+    public boolean isWord(String word) {
+        if (dictionary.contains(word))
             return true;
         return false;
     }
@@ -104,10 +113,6 @@ public class WordManager {
         return words.remove(index);
     }
 
-    public boolean containsWord(String word) {
-        return words.contains(word);
-    }
-
     public String[] getUsedWords() {
         return (String[]) usedWords.toArray();
     }
@@ -128,10 +133,6 @@ public class WordManager {
 
     public String removeUsedWord(int index) {
         return usedWords.remove(index);
-    }
-
-    public boolean containsUsedWord(String word) {
-        return usedWords.contains(word);
     }
 
 }
