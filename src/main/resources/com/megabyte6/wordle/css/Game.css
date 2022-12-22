@@ -1,5 +1,9 @@
 .label {
-    -fx-font-size: 36;
     -fx-border-color: #dddddd;
     -fx-border-radius: 8;
+}
+
+#keyboard .HBox .button {
+    -fx-text-fill: #afcfdb;
+    -fx-background-color: gray;
 }

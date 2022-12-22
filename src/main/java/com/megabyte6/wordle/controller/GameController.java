@@ -1,7 +1,6 @@
 package com.megabyte6.wordle.controller;
 
 import static com.megabyte6.wordle.util.Range.range;
-
 import static javafx.util.Duration.millis;
 
 import java.util.List;
@@ -15,15 +14,17 @@ import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
 import javafx.animation.RotateTransition;
 import javafx.animation.SequentialTransition;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
@@ -38,9 +39,9 @@ public class GameController implements Controller {
     private Game game = new Game(this);
 
     @FXML
-    private StackPane root;
-    @FXML
     private GridPane gameBoard;
+    @FXML
+    private VBox keyboard;
     @FXML
     private Label popup;
 
@@ -90,6 +91,23 @@ public class GameController implements Controller {
                 game.setLetter(key.getChar());
                 game.incrementCursorIndex();
         }
+
+        // Restore focus to the scene.
+        SceneManager.getScene().getRoot().requestFocus();
+    }
+
+    @FXML
+    private void keyBoardKeyPressed(ActionEvent event) {
+        if (!(event.getSource() instanceof Button))
+            return;
+        Button button = (Button) event.getSource();
+        String text = button.getText().toUpperCase();
+
+        typeKey(switch (text) {
+            case "ENTER" -> KeyCode.ENTER;
+            case "⌫" -> KeyCode.BACK_SPACE;
+            default -> KeyCode.valueOf(text);
+        });
     }
 
     private void inputNotValid() {
@@ -119,11 +137,11 @@ public class GameController implements Controller {
 
             final Background background = new Background(backgroundFill);
 
-            RotateTransition rotate2 = new RotateTransition(millis(250), cell);
+            RotateTransition rotate2 = new RotateTransition(millis(200), cell);
             rotate2.setAxis(Rotate.X_AXIS);
             rotate2.setByAngle(-90);
 
-            RotateTransition rotate1 = new RotateTransition(millis(250), cell);
+            RotateTransition rotate1 = new RotateTransition(millis(200), cell);
             rotate1.setAxis(Rotate.X_AXIS);
             rotate1.setByAngle(90);
             rotate1.setOnFinished((event) -> {
@@ -136,10 +154,7 @@ public class GameController implements Controller {
 
         // Build animation.
         SequentialTransition sequentialTransition = new SequentialTransition();
-        for (RotateTransition rotateTransition : rotateTransitions) {
-            sequentialTransition.getChildren().add(rotateTransition);
-            sequentialTransition.getChildren().add(new PauseTransition(millis(50)));
-        }
+        sequentialTransition.getChildren().addAll(rotateTransitions);
 
         // Perform animation.
         sequentialTransition.play();
