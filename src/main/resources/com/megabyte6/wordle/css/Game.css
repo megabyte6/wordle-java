@@ -1,10 +1,10 @@
 .label {
-    -fx-border-color: #dddddd;
+    -fx-border-color: #DDDDDD;
     -fx-border-radius: 8;
 }
 
 #keyboard .button {
-    -fx-text-fill: #ffffff;
+    -fx-text-fill: #FFFFFF;
     -fx-background-color: gray;
     -fx-border-color: none;
     -fx-background-radius: 8;

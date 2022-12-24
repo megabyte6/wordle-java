@@ -1,17 +1,17 @@
 .root {
-    -fx-background-color: #0b2b37;
+    -fx-background-color: #0B2B37;
 }
 
 .label {
-    -fx-text-fill: #afcfdb;
+    -fx-text-fill: #AFCFDB;
 }
 
 .button {
-    -fx-border-color: #afcfdb;
-    -fx-background-color: #0b2b37;
-    -fx-text-fill: #afcfdb;
+    -fx-border-color: #AFCFDB;
+    -fx-background-color: #0B2B37;
+    -fx-text-fill: #AFCFDB;
 }
 
 .button:hover {
-    -fx-background-color: #1b3b47;
+    -fx-background-color: #1B3B47;
 }
