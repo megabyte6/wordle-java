@@ -35,8 +35,8 @@ import javafx.util.Duration;
 
 public class GameController implements Controller {
 
-    private final String CORRECT_COLOR = "#538d4e";
-    private final String WRONG_SPOT_COLOR = "#b59f3b";
+    private final String CORRECT_COLOR = "#A9C666";
+    private final String WRONG_SPOT_COLOR = "#F8D75F";
     private final String INCORRECT_COLOR = "#864d47";
     private final CornerRadii CORNER_RADIUS = new CornerRadii(8);
 
