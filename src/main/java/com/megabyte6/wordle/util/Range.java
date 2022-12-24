@@ -11,12 +11,7 @@ public class Range {
      * @return     An {@code int[]} of integers to loop through.
      */
     public static int[] range(int to) {
-        int[] range = new int[to];
-        for (int i = 0; i < range.length; i++) {
-            range[i] = i;
-        }
-
-        return range;
+        return range(0, to);
     }
 
     /**
