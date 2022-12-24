@@ -3,7 +3,9 @@
     -fx-border-radius: 8;
 }
 
-#keyboard .HBox .button {
-    -fx-text-fill: #afcfdb;
+#keyboard .button {
+    -fx-text-fill: #ffffff;
     -fx-background-color: gray;
+    -fx-border-color: none;
+    -fx-background-radius: 8;
 }
