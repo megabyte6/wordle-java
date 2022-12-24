@@ -13,9 +13,9 @@
 
 <StackPane stylesheets="@../css/style-dark.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.megabyte6.wordle.controller.GameController">
    <children>
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="500.0">
+      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="500.0" stylesheets="@../css/Game.css">
          <children>
-            <GridPane fx:id="gameBoard" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="450.0" stylesheets="@../css/Game.css" VBox.vgrow="ALWAYS">
+            <GridPane fx:id="gameBoard" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="450.0" VBox.vgrow="ALWAYS">
               <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                   <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -281,86 +281,43 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="Q">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="Q">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="W">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="W">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="E">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="E">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="R">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="R">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="T">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="T">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="Y">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="Y">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="U">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="U">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="I">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="I">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="O">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="O">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="P">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Button>
-                     </children>
-                     <VBox.margin>
-                        <Insets bottom="5.0" top="5.0" />
-                     </VBox.margin>
-                  </HBox>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-                     <children>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="A">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="S">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="D">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="F">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="G">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="H">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="J">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="K">
-                           <font>
-                              <Font size="14.0" />
-                           </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="L">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="P">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
@@ -371,36 +328,79 @@
                   </HBox>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="60.0" text="ENTER" />
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="Z">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="A">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="X">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="S">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="C">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="D">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="V">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="F">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="B">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="G">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="N">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="H">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="35.0" text="M">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="J">
                            <font>
                               <Font size="14.0" />
                            </font></Button>
-                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyBoardKeyPressed" prefWidth="60.0" text="⌫">
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="K">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Button>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="L">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Button>
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                     <children>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="60.0" text="ENTER" />
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="Z">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Button>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="X">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Button>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="C">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Button>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="V">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Button>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="B">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Button>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="N">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Button>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="35.0" text="M">
+                           <font>
+                              <Font size="14.0" />
+                           </font></Button>
+                        <Button maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#keyboardKeyPressed" prefWidth="60.0" text="⌫">
                            <font>
                               <Font size="18.0" />
                            </font></Button>
