@@ -1,9 +1,12 @@
 package com.megabyte6.wordle.controller;
 
 import static com.megabyte6.wordle.util.Range.range;
+
 import static javafx.util.Duration.millis;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import com.fxexperience.javafx.animation.ShakeTransition;
@@ -24,6 +27,7 @@ import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
@@ -31,9 +35,9 @@ import javafx.util.Duration;
 
 public class GameController implements Controller {
 
-    private final Color CORRECT_COLOR = Color.web("#538d4e");
-    private final Color WRONG_SPOT_COLOR = Color.web("#b59f3b");
-    private final Color INCORRECT_COLOR = Color.web("#864d47");
+    private final String CORRECT_COLOR = "#538d4e";
+    private final String WRONG_SPOT_COLOR = "#b59f3b";
+    private final String INCORRECT_COLOR = "#864d47";
     private final CornerRadii CORNER_RADIUS = new CornerRadii(8);
 
     private Game game = new Game(this);
@@ -97,7 +101,7 @@ public class GameController implements Controller {
     }
 
     @FXML
-    private void keyBoardKeyPressed(ActionEvent event) {
+    private void keyboardKeyPressed(ActionEvent event) {
         if (!(event.getSource() instanceof Button))
             return;
         Button button = (Button) event.getSource();
@@ -127,15 +131,20 @@ public class GameController implements Controller {
 
         for (int i : range(guess.length())) {
             Label cell = (Label) getNodeByPosition(game.getAttemptNum(), i);
-            BackgroundFill backgroundFill = new BackgroundFill(INCORRECT_COLOR, CORNER_RADIUS, null);
 
+            String color;
             if (guess.charAt(i) == word.charAt(i)) {
-                backgroundFill = new BackgroundFill(CORRECT_COLOR, CORNER_RADIUS, null);
+                color = CORRECT_COLOR;
             } else if (word.indexOf(guess.charAt(i)) != -1) {
-                backgroundFill = new BackgroundFill(WRONG_SPOT_COLOR, CORNER_RADIUS, null);
+                color = WRONG_SPOT_COLOR;
+            } else {
+                color = INCORRECT_COLOR;
             }
 
-            final Background background = new Background(backgroundFill);
+            setKeyboardKey(guess.charAt(i), color);
+
+            final Background background = new Background(
+                    new BackgroundFill(Color.web(color), CORNER_RADIUS, null));
 
             RotateTransition rotate2 = new RotateTransition(millis(200), cell);
             rotate2.setAxis(Rotate.X_AXIS);
@@ -193,6 +202,37 @@ public class GameController implements Controller {
         return gameBoard.getChildren().stream()
                 .filter(node -> GridPane.getRowIndex(node) == rowValue)
                 .collect(Collectors.toList());
+    }
+
+    private List<Node> getKeyboardKeys() {
+        List<Node> keys = new ArrayList<>();
+        keyboard.getChildren().forEach(hBox -> {
+            if (!(hBox instanceof HBox))
+                return;
+            ((HBox) hBox).getChildren().forEach(key -> keys.add(key));
+        });
+        return keys;
+    }
+
+    private void setKeyboardKey(char key, String color) {
+        setKeyboardKey(Character.toString(key), color);
+    }
+
+    private void setKeyboardKey(String key, String color) {
+        Button button;
+        try {
+            button = (Button) getKeyboardKeys().stream()
+                    .filter(node -> node instanceof Button
+                            && ((Button) node).getText().toLowerCase().equals(key.toLowerCase()))
+                    .findFirst()
+                    .get();
+        } catch (NoSuchElementException e) {
+            e.printStackTrace();
+            System.err.println("ERROR: No key with the value '" + key + "'");
+            return;
+        }
+        // button.setBackground(color);
+        button.setStyle("-fx-background-color: " + color + ";");
     }
 
     private void popup(String text) {
