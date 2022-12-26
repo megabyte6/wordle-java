@@ -66,11 +66,13 @@ public class GameController implements Controller {
 
             case ENTER:
                 // Cursor isn't at the end of the line.
-                if (!game.cursorIsAtMaxIndex())
+                if (!game.cursorIsAtMaxIndex()) {
+                    inputNotValid("Not enough letters");
                     break;
+                }
                 // Input isn't a word.
                 if (!game.isWord(game.getCurrentGuess())) {
-                    inputNotValid();
+                    inputNotValid("Not in word list");
                     break;
                 }
                 // Show which letters are correct.
@@ -114,13 +116,13 @@ public class GameController implements Controller {
         });
     }
 
-    private void inputNotValid() {
+    private void inputNotValid(String message) {
         getNodesByRow(game.getAttemptNum()).stream()
                 .forEach(node -> {
                     ShakeTransition shake = new ShakeTransition(node, millis(750), millis(0));
                     shake.play();
                 });
-        popup("Not in word list");
+        popup(message);
     }
 
     private void checkGuess() {
