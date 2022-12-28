@@ -35,9 +35,9 @@ import javafx.util.Duration;
 
 public class GameController implements Controller {
 
-    private final String CORRECT_COLOR = "#538d4e";
-    private final String WRONG_SPOT_COLOR = "#b59f3b";
-    private final String INCORRECT_COLOR = "#864d47";
+    private final String CORRECT_COLOR = "#538D4E";
+    private final String WRONG_SPOT_COLOR = "#B59F3B";
+    private final String INCORRECT_COLOR = "#864D47";
     private final CornerRadii CORNER_RADIUS = new CornerRadii(8);
 
     private Game game = new Game(this);
@@ -59,6 +59,7 @@ public class GameController implements Controller {
             case BACK_SPACE:
                 if (game.cursorIsAtMinIndex())
                     break;
+
                 game.decrementCursorIndex();
                 game.setLetter("");
                 break;
@@ -68,7 +69,6 @@ public class GameController implements Controller {
                     inputNotValid("Not enough letters");
                     break;
                 }
-
                 if (!game.isWord(game.getCurrentGuess())) {
                     inputNotValid("Not in word list");
                     break;
