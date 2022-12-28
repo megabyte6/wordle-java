@@ -9,7 +9,7 @@ public class Game {
     private WordManager wordManager = new WordManager();
 
     private char[][] gameBoard = new char[6][5];
-    private int attemptNum = 0, cursorIndex = 0;
+    private int guessCount = 0, cursorIndex = 0;
     private String currentWord;
 
     public Game(GameController controller) {
@@ -28,7 +28,7 @@ public class Game {
     public void setLetter(char value) {
         if (cursorIsAtMaxIndex())
             return;
-        setGameBoard(attemptNum, cursorIndex, value);
+        setGameBoard(guessCount, cursorIndex, value);
     }
 
     public boolean isWord(String word) {
@@ -44,7 +44,7 @@ public class Game {
     }
 
     public String getCurrentGuess() {
-        return new String(gameBoard[attemptNum]).toLowerCase();
+        return new String(gameBoard[guessCount]).toLowerCase();
     }
 
     public char[][] getGameBoard() {
@@ -61,18 +61,22 @@ public class Game {
         controller.setBoxText(text, row, column);
     }
 
-    public int getAttemptNum() {
-        return attemptNum;
+    public int getGuessCount() {
+        return guessCount;
     }
 
-    public void setAttemptNum(int value) {
-        if (value < 0 || value >= gameBoard.length)
+    public boolean isOutOfGuesses() {
+        return guessCount == gameBoard.length;
+    }
+
+    public void setGuessCount(int value) {
+        if (value < 0 || value > gameBoard.length)
             return;
-        attemptNum = value;
+        guessCount = value;
     }
 
-    public void incrementAttemptCount() {
-        setAttemptNum(attemptNum + 1);
+    public void incrementGuessCount() {
+        setGuessCount(guessCount + 1);
     }
 
     public int getCursorIndex() {
@@ -84,11 +88,11 @@ public class Game {
     }
 
     public boolean cursorIsAtMaxIndex() {
-        return cursorIndex == gameBoard[attemptNum].length;
+        return cursorIndex == gameBoard[guessCount].length;
     }
 
     public void setCursorIndex(int value) {
-        if (value < 0 || value > gameBoard[attemptNum].length)
+        if (value < 0 || value > gameBoard[guessCount].length)
             return;
         cursorIndex = value;
     }

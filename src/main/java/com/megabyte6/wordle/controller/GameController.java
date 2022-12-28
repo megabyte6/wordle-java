@@ -57,7 +57,6 @@ public class GameController implements Controller {
     private void typeKey(KeyCode key) {
         switch (key) {
             case BACK_SPACE:
-                // Nothing to delete
                 if (game.cursorIsAtMinIndex())
                     break;
                 game.decrementCursorIndex();
@@ -65,30 +64,34 @@ public class GameController implements Controller {
                 break;
 
             case ENTER:
-                // Cursor isn't at the end of the line.
-                if (!game.cursorIsAtMaxIndex())
+                if (!game.cursorIsAtMaxIndex()) {
+                    inputNotValid("Not enough letters");
                     break;
-                // Input isn't a word.
+                }
+
                 if (!game.isWord(game.getCurrentGuess())) {
-                    inputNotValid();
+                    inputNotValid("Not in word list");
                     break;
                 }
-                // Show which letters are correct.
+
                 checkGuess();
-                // Guess is correct.
+
                 if (game.guessIsCorrect()) {
-                    winGame();
+                    gameWon();
                     break;
                 }
-                game.incrementAttemptCount();
+
+                game.incrementGuessCount();
                 game.setCursorIndex(0);
+
+                if (game.isOutOfGuesses())
+                    gameLost();
+
                 break;
 
             default:
-                // Cursor is at the end of the line.
                 if (game.cursorIsAtMaxIndex())
                     break;
-                // The key pressed isn't a letter.
                 if (!key.isLetterKey())
                     break;
 
@@ -96,7 +99,8 @@ public class GameController implements Controller {
                 game.incrementCursorIndex();
         }
 
-        // Restore focus to the scene.
+        // Restore focus to the scene otherwise the key presses will not be
+        // detected.
         SceneManager.getScene().getRoot().requestFocus();
     }
 
@@ -114,13 +118,13 @@ public class GameController implements Controller {
         });
     }
 
-    private void inputNotValid() {
-        getNodesByRow(game.getAttemptNum()).stream()
+    private void inputNotValid(String message) {
+        getNodesByRow(game.getGuessCount()).stream()
                 .forEach(node -> {
                     ShakeTransition shake = new ShakeTransition(node, millis(750), millis(0));
                     shake.play();
                 });
-        popup("Not in word list");
+        popup(message);
     }
 
     private void checkGuess() {
@@ -130,7 +134,7 @@ public class GameController implements Controller {
         RotateTransition[] rotateTransitions = new RotateTransition[guess.length()];
 
         for (int i : range(guess.length())) {
-            Label cell = (Label) getNodeByPosition(game.getAttemptNum(), i);
+            Label cell = (Label) getNodeByPosition(game.getGuessCount(), i);
 
             String color;
             if (guess.charAt(i) == word.charAt(i)) {
@@ -169,7 +173,10 @@ public class GameController implements Controller {
         sequentialTransition.play();
     }
 
-    private void winGame() {
+    private void gameWon() {
+    }
+
+    private void gameLost() {
     }
 
     public void setBoxText(String text, int row, int column) {
