@@ -47,7 +47,7 @@ public class SceneManager {
             SceneManager.scene.getRoot().setOpacity(0);
             // Initialize listeners.
             Controller controller = fxmlLoader.getController();
-            controller.initListeners();
+            controller.initialize();
         } catch (IOException e) {
             System.err.println("ERROR: Cannot read file '" + path + "'");
             e.printStackTrace();

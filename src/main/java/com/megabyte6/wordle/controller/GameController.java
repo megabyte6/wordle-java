@@ -33,7 +33,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
-public class GameController implements Controller {
+public class GameController extends Controller {
 
     private final String CORRECT_COLOR = "#538D4E";
     private final String WRONG_SPOT_COLOR = "#B59F3B";
@@ -50,7 +50,7 @@ public class GameController implements Controller {
     private Label popup;
 
     @Override
-    public void initListeners() {
+    public void initialize() {
         SceneManager.getScene().setOnKeyPressed(event -> typeKey(event.getCode()));
     }
 
