@@ -34,18 +34,18 @@ public class SceneManager {
 
     public static void switchScenes(String fxmlFileName, Duration totalTransitionDuration) {
         // Get old scene.
-        Scene oldScene = SceneManager.scene;
+        final Scene oldScene = SceneManager.scene;
         oldScene.setFill(SceneManager.backgroundColor);
 
         // Load new scene.
         final String path = "/com/megabyte6/wordle/view/" + fxmlFileName;
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource(path));
-            // Set the current scene to the new scene.
+            final FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource(path));
+
             SceneManager.scene = new Scene(fxmlLoader.load());
             SceneManager.scene.setFill(SceneManager.backgroundColor);
             SceneManager.scene.getRoot().setOpacity(0);
-            // Initialize listeners.
+
             Controller controller = fxmlLoader.getController();
             controller.initialize();
         } catch (IOException e) {
@@ -55,12 +55,12 @@ public class SceneManager {
         }
 
         // Set up fade transitions.
-        FadeTransition oldSceneFadeOut = new FadeTransition(
+        final FadeTransition oldSceneFadeOut = new FadeTransition(
                 totalTransitionDuration.divide(2), oldScene.getRoot());
         oldSceneFadeOut.setFromValue(1);
         oldSceneFadeOut.setToValue(0);
 
-        FadeTransition newSceneFadeIn = new FadeTransition(
+        final FadeTransition newSceneFadeIn = new FadeTransition(
                 totalTransitionDuration.divide(2), SceneManager.scene.getRoot());
         newSceneFadeIn.setFromValue(0);
         newSceneFadeIn.setToValue(1);
