@@ -59,6 +59,9 @@ public class GameController extends Controller {
     }
 
     private void typeKey(KeyCode key) {
+        if (game.isGameOver())
+            return;
+
         switch (key) {
             case BACK_SPACE:
                 if (game.cursorIsAtMinIndex())
