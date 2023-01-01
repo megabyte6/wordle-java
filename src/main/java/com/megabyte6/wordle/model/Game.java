@@ -12,8 +12,6 @@ public class Game {
     private int guessCount = 0, cursorIndex = 0;
     private String currentWord;
 
-    private boolean gameOver = false;
-
     public Game(GameController controller) {
         this.controller = controller;
         currentWord = wordManager.generate();
@@ -67,6 +65,10 @@ public class Game {
         return guessCount;
     }
 
+    public boolean isOnLastGuess() {
+        return guessCount == gameBoard.length - 1;
+    }
+
     public void setGuessCount(int value) {
         if (value < 0 || value >= gameBoard.length)
             return;
@@ -109,14 +111,6 @@ public class Game {
 
     public void generateNewWord() {
         currentWord = wordManager.generate();
-    }
-
-    public void setGameOver(boolean gameOver) {
-        this.gameOver = gameOver;
-    }
-
-    public boolean isGameOver() {
-        return gameOver;
     }
 
 }
