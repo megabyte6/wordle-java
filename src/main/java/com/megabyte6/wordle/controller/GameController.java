@@ -10,8 +10,10 @@ import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 import com.fxexperience.javafx.animation.ShakeTransition;
+import com.megabyte6.wordle.App;
 import com.megabyte6.wordle.model.Game;
 import com.megabyte6.wordle.util.SceneManager;
+import com.megabyte6.wordle.util.Stats;
 import com.megabyte6.wordle.util.tuple.Pair;
 
 import javafx.animation.FadeTransition;
@@ -204,7 +206,6 @@ public class GameController extends Controller {
         final StatsController controller = (StatsController) pair.b();
         root.getChildren().add(content);
 
-        controller.setGame(game);
         controller.runOnClose(() -> {
             root.getChildren().remove(content);
             enableUI();
@@ -216,6 +217,25 @@ public class GameController extends Controller {
     private void gameWon() {
         game.setGameOver(true);
 
+        // Update stats.
+        final Stats oldStats = App.stats;
+
+        final int numberOfGamesPlayed = oldStats.numberOfGamesPlayed() + 1;
+        final int numberOfWins = oldStats.numberOfWins() + 1;
+        final int currentWinStreak = oldStats.currentWinStreak() + 1;
+        final int longestWinStreak = oldStats.currentWinStreak() + 1 > oldStats.longestWinStreak()
+                ? oldStats.currentWinStreak() + 1
+                : oldStats.longestWinStreak();
+        int[] guessDistribution = oldStats.guessDistribution();
+        guessDistribution[game.getGuessCount()]++;
+
+        App.stats = new Stats(
+                numberOfGamesPlayed,
+                numberOfWins,
+                currentWinStreak,
+                longestWinStreak,
+                guessDistribution);
+
         // Show stats and reset the game.
         showStats(() -> {
             SceneManager.switchScenes("Game.fxml", Duration.millis(400));
@@ -225,6 +245,22 @@ public class GameController extends Controller {
     private void gameLost() {
         game.setGameOver(true);
         disableUI();
+
+        // Update stats.
+        final Stats oldStats = App.stats;
+
+        final int numberOfGamesPlayed = oldStats.numberOfGamesPlayed() + 1;
+        final int numberOfWins = oldStats.numberOfWins();
+        final int currentWinStreak = oldStats.currentWinStreak();
+        final int longestWinStreak = oldStats.longestWinStreak();
+        final int[] guessDistribution = oldStats.guessDistribution();
+
+        App.stats = new Stats(
+                numberOfGamesPlayed,
+                numberOfWins,
+                currentWinStreak,
+                longestWinStreak,
+                guessDistribution);
 
         final Pair<Node, Controller> pair = SceneManager.loadFXML("GameLost.fxml");
         final Node content = pair.a();
