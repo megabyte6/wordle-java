@@ -214,6 +214,8 @@ public class GameController extends Controller {
     }
 
     private void gameWon() {
+        game.setGameOver(true);
+
         // Show stats and reset the game.
         showStats(() -> {
             SceneManager.switchScenes("Game.fxml", Duration.millis(400));
@@ -221,6 +223,7 @@ public class GameController extends Controller {
     }
 
     private void gameLost() {
+        game.setGameOver(true);
         disableUI();
 
         final Pair<Node, Controller> pair = SceneManager.loadFXML("GameLost.fxml");
