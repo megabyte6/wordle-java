@@ -38,15 +38,30 @@ public class Game {
     }
 
     public boolean guessIsCorrect() {
-        if (!isWord(getCurrentGuess()))
+        String guess = isCurrentGuessEmpty()
+                ? getLastGuess()
+                : getCurrentGuess();
+
+        if (!isWord(guess))
             return false;
-        if (!getCurrentGuess().equals(currentWord))
+        if (!guess.equals(currentWord))
             return false;
         return true;
     }
 
+    public boolean isCurrentGuessEmpty() {
+        return new String(gameBoard[guessCount]).chars()
+                .anyMatch(c -> c == '\u0000');
+    }
+
     public String getCurrentGuess() {
         return new String(gameBoard[guessCount]).toLowerCase();
+    }
+
+    public String getLastGuess() {
+        if (guessCount == 0)
+            return new String();
+        return new String(gameBoard[guessCount - 1]).toLowerCase();
     }
 
     public char[][] getGameBoard() {
