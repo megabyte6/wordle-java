@@ -78,18 +78,16 @@ public class GameController extends Controller {
                     break;
                 }
 
-                checkGuess();
+                checkGuess(() -> {
+                    if (game.guessIsCorrect())
+                        gameWon();
+                    if (game.isOnLastGuess() && game.cursorIsAtMaxIndex())
+                        gameLost();
+                });
 
-                if (game.guessIsCorrect()) {
-                    gameWon();
-                    break;
-                }
-
-                if (game.getGuessCount() == game.getGameBoard().length - 1)
-                    game.setGameOver(true);
-
+                if (!game.isOnLastGuess())
+                    game.setCursorIndex(0);
                 game.incrementGuessCount();
-                game.setCursorIndex(0);
 
                 break;
 
@@ -102,9 +100,6 @@ public class GameController extends Controller {
                 game.setLetter(key.getChar());
                 game.incrementCursorIndex();
         }
-
-        if (game.isGameOver())
-            gameLost();
 
         // Restore focus to the scene otherwise the key presses will not be
         // detected.
@@ -135,6 +130,11 @@ public class GameController extends Controller {
     }
 
     private void checkGuess() {
+        checkGuess(() -> {
+        });
+    }
+
+    private void checkGuess(Runnable runAfter) {
         String word = game.getCurrentWord();
         String guess = game.getCurrentGuess();
 
@@ -164,7 +164,7 @@ public class GameController extends Controller {
             RotateTransition rotate1 = new RotateTransition(millis(200), cell);
             rotate1.setAxis(Rotate.X_AXIS);
             rotate1.setByAngle(90);
-            rotate1.setOnFinished((event) -> {
+            rotate1.setOnFinished(event -> {
                 cell.setBackground(background);
                 rotate2.play();
             });
@@ -175,6 +175,7 @@ public class GameController extends Controller {
         // Build animation.
         SequentialTransition sequentialTransition = new SequentialTransition();
         sequentialTransition.getChildren().addAll(rotateTransitions);
+        sequentialTransition.setOnFinished(event -> runAfter.run());
 
         // Perform animation.
         sequentialTransition.play();
