@@ -50,7 +50,7 @@ public class Game {
     }
 
     public boolean isCurrentGuessEmpty() {
-        return new String(gameBoard[guessCount]).chars()
+        return getCurrentGuess().chars()
                 .anyMatch(c -> c == '\u0000');
     }
 

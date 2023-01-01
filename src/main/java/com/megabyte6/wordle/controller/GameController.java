@@ -196,7 +196,21 @@ public class GameController extends Controller {
         root.getChildren().get(0).setOpacity(1);
     }
 
-    public void showStats(Runnable onClose) {
+    public void showStats(Runnable runOnClose) {
+        disableUI();
+
+        final Pair<Node, Controller> pair = SceneManager.loadFXML("Stats.fxml");
+        final Node content = pair.a();
+        final StatsController controller = (StatsController) pair.b();
+        root.getChildren().add(content);
+
+        controller.setGame(game);
+        controller.runOnClose(() -> {
+            root.getChildren().remove(content);
+            enableUI();
+
+            runOnClose.run();
+        });
     }
 
     private void gameWon() {
@@ -216,6 +230,7 @@ public class GameController extends Controller {
 
         controller.setCorrectWord(game.getCurrentWord());
         controller.runOnClose(() -> {
+            root.getChildren().remove(content);
             enableUI();
 
             // Show stats and reset the game.

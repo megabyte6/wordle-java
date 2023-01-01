@@ -1,23 +1,29 @@
 package com.megabyte6.wordle.controller;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.Label;
+import com.megabyte6.wordle.model.Game;
 
-public class GameLostController extends Controller {
+import javafx.fxml.FXML;
+
+public class StatsController extends Controller {
+
+    private Game game;
 
     private Runnable runOnClose = () -> {
     };
 
-    @FXML
-    private Label correctWord;
+    @Override
+    public void initialize() {
+        if (game == null)
+            return;
+    }
 
     @FXML
     private void close() {
         runOnClose.run();
     }
 
-    public void setCorrectWord(String word) {
-        correctWord.setText(word.toUpperCase());
+    public void setGame(Game game) {
+        this.game = game;
     }
 
     public void runOnClose(Runnable runOnClose) {
