@@ -184,25 +184,45 @@ public class GameController extends Controller {
         sequentialTransition.play();
     }
 
-    private void gameOver(String fxmlFileName) {
-        // Disable UI.
+    private void disableUI() {
         keyboard.getChildren().forEach(hbox -> ((HBox) hbox).getChildren()
                 .forEach(key -> ((Button) key).setDisable(true)));
         root.getChildren().get(0).setOpacity(0.5);
+    }
 
-        final Pair<Node, Controller> pair = SceneManager.loadFXML(fxmlFileName);
-        final Node content = pair.a();
-        final Controller controller = pair.b();
-        root.getChildren().add(content);
-        controller.initialize();
+    private void enableUI() {
+        keyboard.getChildren().forEach(hbox -> ((HBox) hbox).getChildren()
+                .forEach(key -> ((Button) key).setDisable(false)));
+        root.getChildren().get(0).setOpacity(1);
+    }
+
+    public void showStats(Runnable onClose) {
     }
 
     private void gameWon() {
-        gameOver("GameWon.fxml");
+        // Show stats and reset the game.
+        showStats(() -> {
+            SceneManager.switchScenes("Game.fxml", Duration.millis(400));
+        });
     }
 
     private void gameLost() {
-        gameOver("GameLost.fxml");
+        disableUI();
+
+        final Pair<Node, Controller> pair = SceneManager.loadFXML("GameLost.fxml");
+        final Node content = pair.a();
+        final GameLostController controller = (GameLostController) pair.b();
+        root.getChildren().add(content);
+
+        controller.setCorrectWord(game.getCurrentWord());
+        controller.runOnClose(() -> {
+            enableUI();
+
+            // Show stats and reset the game.
+            showStats(() -> {
+                SceneManager.switchScenes("Game.fxml", Duration.millis(400));
+            });
+        });
     }
 
     public void setBoxText(String text, int row, int column) {
