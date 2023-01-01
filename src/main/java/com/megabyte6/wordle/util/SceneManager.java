@@ -3,17 +3,22 @@ package com.megabyte6.wordle.util;
 import java.io.IOException;
 
 import com.megabyte6.wordle.controller.Controller;
+import com.megabyte6.wordle.util.tuple.Pair;
+import com.megabyte6.wordle.util.tuple.Tuple;
 
 import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SceneManager {
+
+    private static final String RESOURCE_PATH = "/com/megabyte6/wordle/view/";
 
     private static Stage stage;
     private static Scene scene;
@@ -34,20 +39,20 @@ public class SceneManager {
 
     public static void switchScenes(String fxmlFileName, Duration totalTransitionDuration) {
         // Get old scene.
-        Scene oldScene = SceneManager.scene;
+        final Scene oldScene = SceneManager.scene;
         oldScene.setFill(SceneManager.backgroundColor);
 
         // Load new scene.
-        final String path = "/com/megabyte6/wordle/view/" + fxmlFileName;
+        final String path = RESOURCE_PATH + fxmlFileName;
         try {
-            FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource(path));
-            // Set the current scene to the new scene.
+            final FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource(path));
+
             SceneManager.scene = new Scene(fxmlLoader.load());
             SceneManager.scene.setFill(SceneManager.backgroundColor);
             SceneManager.scene.getRoot().setOpacity(0);
-            // Initialize listeners.
+
             Controller controller = fxmlLoader.getController();
-            controller.initListeners();
+            controller.initialize();
         } catch (IOException e) {
             System.err.println("ERROR: Cannot read file '" + path + "'");
             e.printStackTrace();
@@ -55,12 +60,12 @@ public class SceneManager {
         }
 
         // Set up fade transitions.
-        FadeTransition oldSceneFadeOut = new FadeTransition(
+        final FadeTransition oldSceneFadeOut = new FadeTransition(
                 totalTransitionDuration.divide(2), oldScene.getRoot());
         oldSceneFadeOut.setFromValue(1);
         oldSceneFadeOut.setToValue(0);
 
-        FadeTransition newSceneFadeIn = new FadeTransition(
+        final FadeTransition newSceneFadeIn = new FadeTransition(
                 totalTransitionDuration.divide(2), SceneManager.scene.getRoot());
         newSceneFadeIn.setFromValue(0);
         newSceneFadeIn.setToValue(1);
@@ -75,6 +80,23 @@ public class SceneManager {
             };
         });
         oldSceneFadeOut.play();
+    }
+
+    public static Pair<Node, Controller> loadFXML(String fxmlFileName) {
+        Node node;
+        Controller controller;
+
+        final String path = RESOURCE_PATH + fxmlFileName;
+        try {
+            final FXMLLoader fxmlLoader = new FXMLLoader(SceneManager.class.getResource(path));
+            node = fxmlLoader.load();
+            controller = fxmlLoader.getController();
+        } catch (IOException e) {
+            System.err.println("ERROR: Cannot read file '" + path + "'");
+            e.printStackTrace();
+            return Tuple.of(null, null);
+        }
+        return Tuple.of(node, controller);
     }
 
     public static Stage getStage() {

@@ -9,8 +9,10 @@ public class Game {
     private WordManager wordManager = new WordManager();
 
     private char[][] gameBoard = new char[6][5];
-    private int attemptNum = 0, cursorIndex = 0;
+    private int guessCount = 0, cursorIndex = 0;
     private String currentWord;
+
+    private boolean gameOver = false;
 
     public Game(GameController controller) {
         this.controller = controller;
@@ -28,7 +30,7 @@ public class Game {
     public void setLetter(char value) {
         if (cursorIsAtMaxIndex())
             return;
-        setGameBoard(attemptNum, cursorIndex, value);
+        setGameBoard(guessCount, cursorIndex, value);
     }
 
     public boolean isWord(String word) {
@@ -36,15 +38,30 @@ public class Game {
     }
 
     public boolean guessIsCorrect() {
-        if (!isWord(getCurrentGuess()))
+        String guess = isCurrentGuessEmpty()
+                ? getLastGuess()
+                : getCurrentGuess();
+
+        if (!isWord(guess))
             return false;
-        if (!getCurrentGuess().equals(currentWord))
+        if (!guess.equals(currentWord))
             return false;
         return true;
     }
 
+    public boolean isCurrentGuessEmpty() {
+        return getCurrentGuess().chars()
+                .anyMatch(c -> c == '\u0000');
+    }
+
     public String getCurrentGuess() {
-        return new String(gameBoard[attemptNum]).toLowerCase();
+        return new String(gameBoard[guessCount]).toLowerCase();
+    }
+
+    public String getLastGuess() {
+        if (guessCount == 0)
+            return new String();
+        return new String(gameBoard[guessCount - 1]).toLowerCase();
     }
 
     public char[][] getGameBoard() {
@@ -61,18 +78,22 @@ public class Game {
         controller.setBoxText(text, row, column);
     }
 
-    public int getAttemptNum() {
-        return attemptNum;
+    public int getGuessCount() {
+        return guessCount;
     }
 
-    public void setAttemptNum(int value) {
+    public boolean isOnLastGuess() {
+        return guessCount == gameBoard.length - 1;
+    }
+
+    public void setGuessCount(int value) {
         if (value < 0 || value >= gameBoard.length)
             return;
-        attemptNum = value;
+        guessCount = value;
     }
 
-    public void incrementAttemptCount() {
-        setAttemptNum(attemptNum + 1);
+    public void incrementGuessCount() {
+        setGuessCount(guessCount + 1);
     }
 
     public int getCursorIndex() {
@@ -84,11 +105,11 @@ public class Game {
     }
 
     public boolean cursorIsAtMaxIndex() {
-        return cursorIndex == gameBoard[attemptNum].length;
+        return cursorIndex == gameBoard[guessCount].length;
     }
 
     public void setCursorIndex(int value) {
-        if (value < 0 || value > gameBoard[attemptNum].length)
+        if (value < 0 || value > gameBoard[guessCount].length)
             return;
         cursorIndex = value;
     }
@@ -107,6 +128,14 @@ public class Game {
 
     public void generateNewWord() {
         currentWord = wordManager.generate();
+    }
+
+    public void setGameOver(boolean gameOver) {
+        this.gameOver = gameOver;
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
     }
 
 }

@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import com.fxexperience.javafx.animation.ShakeTransition;
 import com.megabyte6.wordle.model.Game;
 import com.megabyte6.wordle.util.SceneManager;
+import com.megabyte6.wordle.util.tuple.Pair;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
@@ -28,12 +29,13 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
-public class GameController implements Controller {
+public class GameController extends Controller {
 
     private final String CORRECT_COLOR = "#8FB935";
     private final String WRONG_SPOT_COLOR = "#F8D75F";
@@ -43,6 +45,8 @@ public class GameController implements Controller {
     private Game game = new Game(this);
 
     @FXML
+    private StackPane root;
+    @FXML
     private GridPane gameBoard;
     @FXML
     private VBox keyboard;
@@ -50,45 +54,49 @@ public class GameController implements Controller {
     private Label popup;
 
     @Override
-    public void initListeners() {
+    public void initialize() {
         SceneManager.getScene().setOnKeyPressed(event -> typeKey(event.getCode()));
     }
 
     private void typeKey(KeyCode key) {
+        if (game.isGameOver())
+            return;
+
         switch (key) {
             case BACK_SPACE:
-                // Nothing to delete
                 if (game.cursorIsAtMinIndex())
                     break;
+
                 game.decrementCursorIndex();
                 game.setLetter("");
                 break;
 
             case ENTER:
-                // Cursor isn't at the end of the line.
-                if (!game.cursorIsAtMaxIndex())
+                if (!game.cursorIsAtMaxIndex()) {
+                    inputNotValid("Not enough letters");
                     break;
-                // Input isn't a word.
+                }
                 if (!game.isWord(game.getCurrentGuess())) {
-                    inputNotValid();
+                    inputNotValid("Not in word list");
                     break;
                 }
-                // Show which letters are correct.
-                checkGuess();
-                // Guess is correct.
-                if (game.guessIsCorrect()) {
-                    winGame();
-                    break;
-                }
-                game.incrementAttemptCount();
-                game.setCursorIndex(0);
+
+                checkGuess(() -> {
+                    if (game.guessIsCorrect())
+                        gameWon();
+                    if (game.isOnLastGuess() && game.cursorIsAtMaxIndex())
+                        gameLost();
+                });
+
+                if (!game.isOnLastGuess())
+                    game.setCursorIndex(0);
+                game.incrementGuessCount();
+
                 break;
 
             default:
-                // Cursor is at the end of the line.
                 if (game.cursorIsAtMaxIndex())
                     break;
-                // The key pressed isn't a letter.
                 if (!key.isLetterKey())
                     break;
 
@@ -96,7 +104,8 @@ public class GameController implements Controller {
                 game.incrementCursorIndex();
         }
 
-        // Restore focus to the scene.
+        // Restore focus to the scene otherwise the key presses will not be
+        // detected.
         SceneManager.getScene().getRoot().requestFocus();
     }
 
@@ -114,23 +123,28 @@ public class GameController implements Controller {
         });
     }
 
-    private void inputNotValid() {
-        getNodesByRow(game.getAttemptNum()).stream()
+    private void inputNotValid(String message) {
+        getNodesByRow(game.getGuessCount()).stream()
                 .forEach(node -> {
                     ShakeTransition shake = new ShakeTransition(node, millis(750), millis(0));
                     shake.play();
                 });
-        popup("Not in word list");
+        popup(message);
     }
 
     private void checkGuess() {
+        checkGuess(() -> {
+        });
+    }
+
+    private void checkGuess(Runnable runAfter) {
         String word = game.getCurrentWord();
         String guess = game.getCurrentGuess();
 
         RotateTransition[] rotateTransitions = new RotateTransition[guess.length()];
 
         for (int i : range(guess.length())) {
-            Label cell = (Label) getNodeByPosition(game.getAttemptNum(), i);
+            Label cell = (Label) getNodeByPosition(game.getGuessCount(), i);
 
             String color;
             if (guess.charAt(i) == word.charAt(i)) {
@@ -153,7 +167,7 @@ public class GameController implements Controller {
             RotateTransition rotate1 = new RotateTransition(millis(200), cell);
             rotate1.setAxis(Rotate.X_AXIS);
             rotate1.setByAngle(90);
-            rotate1.setOnFinished((event) -> {
+            rotate1.setOnFinished(event -> {
                 cell.setBackground(background);
                 rotate2.play();
             });
@@ -164,12 +178,66 @@ public class GameController implements Controller {
         // Build animation.
         SequentialTransition sequentialTransition = new SequentialTransition();
         sequentialTransition.getChildren().addAll(rotateTransitions);
+        sequentialTransition.setOnFinished(event -> runAfter.run());
 
         // Perform animation.
         sequentialTransition.play();
     }
 
-    private void winGame() {
+    private void disableUI() {
+        keyboard.getChildren().forEach(hbox -> ((HBox) hbox).getChildren()
+                .forEach(key -> ((Button) key).setDisable(true)));
+        root.getChildren().get(0).setOpacity(0.5);
+    }
+
+    private void enableUI() {
+        keyboard.getChildren().forEach(hbox -> ((HBox) hbox).getChildren()
+                .forEach(key -> ((Button) key).setDisable(false)));
+        root.getChildren().get(0).setOpacity(1);
+    }
+
+    public void showStats(Runnable runOnClose) {
+        disableUI();
+
+        final Pair<Node, Controller> pair = SceneManager.loadFXML("Stats.fxml");
+        final Node content = pair.a();
+        final StatsController controller = (StatsController) pair.b();
+        root.getChildren().add(content);
+
+        controller.setGame(game);
+        controller.runOnClose(() -> {
+            root.getChildren().remove(content);
+            enableUI();
+
+            runOnClose.run();
+        });
+    }
+
+    private void gameWon() {
+        // Show stats and reset the game.
+        showStats(() -> {
+            SceneManager.switchScenes("Game.fxml", Duration.millis(400));
+        });
+    }
+
+    private void gameLost() {
+        disableUI();
+
+        final Pair<Node, Controller> pair = SceneManager.loadFXML("GameLost.fxml");
+        final Node content = pair.a();
+        final GameLostController controller = (GameLostController) pair.b();
+        root.getChildren().add(content);
+
+        controller.setCorrectWord(game.getCurrentWord());
+        controller.runOnClose(() -> {
+            root.getChildren().remove(content);
+            enableUI();
+
+            // Show stats and reset the game.
+            showStats(() -> {
+                SceneManager.switchScenes("Game.fxml", Duration.millis(400));
+            });
+        });
     }
 
     public void setBoxText(String text, int row, int column) {
