@@ -6,5 +6,7 @@ module wordle {
     opens com.megabyte6.wordle.controller to javafx.fxml;
 
     exports com.megabyte6.wordle;
+    exports com.megabyte6.wordle.controller;
+    exports com.megabyte6.wordle.model;
     exports com.megabyte6.wordle.util;
 }

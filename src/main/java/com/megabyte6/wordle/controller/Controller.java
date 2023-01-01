@@ -1,8 +1,8 @@
 package com.megabyte6.wordle.controller;
 
-public interface Controller {
+public class Controller {
 
-    public default void initListeners() {
+    public void initialize() {
     }
 
 }
