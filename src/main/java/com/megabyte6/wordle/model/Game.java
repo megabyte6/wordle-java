@@ -67,6 +67,10 @@ public class Game {
         return guessCount;
     }
 
+    public boolean isOnLastGuess() {
+        return guessCount == gameBoard.length - 1;
+    }
+
     public void setGuessCount(int value) {
         if (value < 0 || value >= gameBoard.length)
             return;
