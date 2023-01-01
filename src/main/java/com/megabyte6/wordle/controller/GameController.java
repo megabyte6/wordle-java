@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import com.fxexperience.javafx.animation.ShakeTransition;
 import com.megabyte6.wordle.model.Game;
 import com.megabyte6.wordle.util.SceneManager;
+import com.megabyte6.wordle.util.tuple.Pair;
 
 import javafx.animation.FadeTransition;
 import javafx.animation.PauseTransition;
@@ -84,11 +85,11 @@ public class GameController extends Controller {
                     break;
                 }
 
+                if (game.getGuessCount() == game.getGameBoard().length - 1)
+                    game.setGameOver(true);
+
                 game.incrementGuessCount();
                 game.setCursorIndex(0);
-
-                if (game.isOutOfGuesses())
-                    gameLost();
 
                 break;
 
@@ -101,6 +102,9 @@ public class GameController extends Controller {
                 game.setLetter(key.getChar());
                 game.incrementCursorIndex();
         }
+
+        if (game.isGameOver())
+            gameLost();
 
         // Restore focus to the scene otherwise the key presses will not be
         // detected.
@@ -176,10 +180,20 @@ public class GameController extends Controller {
         sequentialTransition.play();
     }
 
+    private void gameOver(String fxmlFileName) {
+        final Pair<Node, Controller> pair = SceneManager.loadFXML(fxmlFileName);
+        final Node content = pair.a();
+        final Controller controller = pair.b();
+        root.getChildren().add(content);
+        controller.initialize();
+    }
+
     private void gameWon() {
+        gameOver("GameWon.fxml");
     }
 
     private void gameLost() {
+        gameOver("GameLost.fxml");
     }
 
     public void setBoxText(String text, int row, int column) {
