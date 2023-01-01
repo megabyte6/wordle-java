@@ -28,6 +28,7 @@ import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.transform.Rotate;
@@ -42,6 +43,8 @@ public class GameController extends Controller {
 
     private Game game = new Game(this);
 
+    @FXML
+    private StackPane root;
     @FXML
     private GridPane gameBoard;
     @FXML
