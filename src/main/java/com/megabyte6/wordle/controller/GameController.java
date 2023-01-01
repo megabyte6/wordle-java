@@ -182,6 +182,11 @@ public class GameController extends Controller {
     }
 
     private void gameOver(String fxmlFileName) {
+        // Disable UI.
+        keyboard.getChildren().forEach(hbox -> ((HBox) hbox).getChildren()
+                .forEach(key -> ((Button) key).setDisable(true)));
+        root.getChildren().get(0).setOpacity(0.5);
+
         final Pair<Node, Controller> pair = SceneManager.loadFXML(fxmlFileName);
         final Node content = pair.a();
         final Controller controller = pair.b();
