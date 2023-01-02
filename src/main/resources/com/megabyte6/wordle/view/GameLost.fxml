@@ -26,6 +26,6 @@
    </children>
    <stylesheets>
       <URL value="@../css/style-dark.css" />
-      <URL value="@../css/GameOver.css" />
+      <URL value="@../css/GameLost.css" />
    </stylesheets>
 </VBox>
