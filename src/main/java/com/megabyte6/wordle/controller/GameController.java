@@ -44,6 +44,8 @@ public class GameController extends Controller {
     private final String INCORRECT_COLOR = "#864D47";
     private final CornerRadii CORNER_RADIUS = new CornerRadii(8);
 
+    private boolean uiDisabled = false;
+
     private Game game = new Game(this);
 
     @FXML
@@ -61,7 +63,7 @@ public class GameController extends Controller {
     }
 
     private void typeKey(KeyCode key) {
-        if (game.isGameOver())
+        if (game.isGameOver() || uiDisabled)
             return;
 
         switch (key) {
@@ -190,12 +192,16 @@ public class GameController extends Controller {
         keyboard.getChildren().forEach(hbox -> ((HBox) hbox).getChildren()
                 .forEach(key -> ((Button) key).setDisable(true)));
         root.getChildren().get(0).setOpacity(0.5);
+
+        uiDisabled = true;
     }
 
     private void enableUI() {
         keyboard.getChildren().forEach(hbox -> ((HBox) hbox).getChildren()
                 .forEach(key -> ((Button) key).setDisable(false)));
         root.getChildren().get(0).setOpacity(1);
+
+        uiDisabled = false;
     }
 
     public void showStats(Runnable runOnClose) {
@@ -206,6 +212,7 @@ public class GameController extends Controller {
         final StatsController controller = (StatsController) pair.b();
         root.getChildren().add(content);
 
+        controller.initialize();
         controller.runOnClose(() -> {
             root.getChildren().remove(content);
             enableUI();
