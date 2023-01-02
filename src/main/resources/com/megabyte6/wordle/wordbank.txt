@@ -26,7 +26,6 @@ annoy
 apart
 apple
 apply
-April
 argue
 arise
 armed
@@ -227,10 +226,9 @@ lucky
 lunch
 magic
 major
-March
+march
 marry
 match
-maths
 maybe
 means
 media

@@ -4967,6 +4967,7 @@ gonna
 gonne
 gonof
 gonzo
+goods
 goody
 gooey
 goofy
@@ -5030,6 +5031,7 @@ grape
 graph
 grapy
 grasp
+grass
 grata
 grate
 grave
@@ -5949,6 +5951,7 @@ youff
 young
 youre
 yourn
+yours
 yourt
 youse
 youth
@@ -6105,6 +6108,7 @@ jawan
 jawed
 jazey
 jazzy
+jeans
 jeany
 jebat
 jebel
@@ -7346,6 +7350,7 @@ matey
 mater
 matha
 mathe
+maths
 matie
 matin
 matka
@@ -7385,6 +7390,7 @@ mccoy
 mckay
 meach
 mealy
+means
 meany
 meant
 mease
@@ -8556,6 +8562,7 @@ panne
 panos
 panse
 pansy
+pants
 panty
 panto
 panus
@@ -9110,6 +9117,7 @@ prepg
 prepn
 presa
 prese
+press
 prest
 preta
 preux
