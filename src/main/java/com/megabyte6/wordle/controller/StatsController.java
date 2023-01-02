@@ -2,14 +2,11 @@ package com.megabyte6.wordle.controller;
 
 import static com.megabyte6.wordle.util.Range.range;
 
-import java.util.Arrays;
-
 import com.megabyte6.wordle.App;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.Node;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Label;
