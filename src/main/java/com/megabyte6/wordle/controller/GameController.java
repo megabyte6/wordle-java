@@ -182,7 +182,15 @@ public class GameController extends Controller {
         // Build animation.
         SequentialTransition sequentialTransition = new SequentialTransition();
         sequentialTransition.getChildren().addAll(rotateTransitions);
-        sequentialTransition.setOnFinished(event -> runAfter.run());
+        sequentialTransition.setOnFinished(event -> {
+            // Unlock keyboard.
+            uiDisabled = false;
+
+            runAfter.run();
+        });
+
+        // Disable keyboard.
+        uiDisabled = true;
 
         // Perform animation.
         sequentialTransition.play();
