@@ -1,7 +1,6 @@
 package com.megabyte6.wordle.controller;
 
 import static com.megabyte6.wordle.util.Range.range;
-
 import static javafx.util.Duration.millis;
 
 import java.util.ArrayList;
@@ -43,6 +42,14 @@ public class GameController extends Controller {
     private final String WRONG_SPOT_COLOR = "#F8D75F";
     private final String INCORRECT_COLOR = "#864D47";
     private final CornerRadii CORNER_RADIUS = new CornerRadii(8);
+    private final String[] WIN_MESSAGES = {
+            "Genius",
+            "Magnificent",
+            "Impressive",
+            "Splendid",
+            "Great",
+            "Phew"
+    };
 
     private boolean uiDisabled = false;
 
@@ -252,9 +259,14 @@ public class GameController extends Controller {
                 guessDistribution);
 
         // Show stats and reset the game.
-        showStats(() -> {
-            SceneManager.switchScenes("Game.fxml", Duration.millis(400));
+        PauseTransition pauseTransition = new PauseTransition(millis(1500));
+        pauseTransition.setOnFinished((event) -> {
+            showStats(() -> {
+                SceneManager.switchScenes("Game.fxml", Duration.millis(400));
+            });
         });
+        popup(WIN_MESSAGES[game.getGuessCount() - 1]);
+        pauseTransition.play();
     }
 
     private void gameLost() {
@@ -358,7 +370,7 @@ public class GameController extends Controller {
     }
 
     private void popup(String text) {
-        popup(text, millis(750), millis(200));
+        popup(text, millis(1000), millis(250));
     }
 
     private void popup(String text, Duration pauseDuration, Duration transitionDuration) {
