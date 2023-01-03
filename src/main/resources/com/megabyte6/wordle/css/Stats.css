@@ -1,0 +1,8 @@
+VBox {
+    -fx-background-color: #0B2B37;
+    -fx-border-color: gray;
+}
+
+.chart-pie-label {
+    -fx-fill: #FFFFFF;
+}
