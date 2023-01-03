@@ -6,6 +6,7 @@
 
 #keyboard .button {
     -fx-text-fill: #FFFFFF;
-    -fx-background-color: gray;
+    -fx-background-color: #707070;
     -fx-border-color: none;
+    -fx-font-weight: bold;
 }
