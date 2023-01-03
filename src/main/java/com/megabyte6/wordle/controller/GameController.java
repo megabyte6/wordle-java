@@ -127,6 +127,12 @@ public class GameController extends Controller {
         });
     }
 
+    @FXML
+    private void statsButtonPressed(ActionEvent event) {
+        showStats(() -> {
+        });
+    }
+
     private void inputNotValid(String message) {
         getNodesByRow(game.getGuessCount()).stream()
                 .forEach(node -> {
@@ -207,6 +213,33 @@ public class GameController extends Controller {
     }
 
     public void showStats(Runnable runOnClose) {
+        setUIDisabled(true);
+
+        final Pair<Node, Controller> pair = SceneManager.loadFXML("Stats.fxml");
+        final Node content = pair.a();
+        final StatsController controller = (StatsController) pair.b();
+        root.getChildren().add(content);
+
+        controller.initialize();
+        controller.runOnClose(() -> {
+            root.getChildren().remove(content);
+            setUIDisabled(false);
+
+            runOnClose.run();
+        });
+    }
+
+    private void setUIDisabled(boolean disabled) {
+        keyboard.getChildren().forEach(hbox -> ((HBox) hbox).getChildren()
+                .forEach(key -> ((Button) key).setDisable(disabled)));
+        root.getChildren().get(0).setOpacity(disabled
+                ? 0.5
+                : 1);
+
+        uiDisabled = disabled;
+    }
+
+    private void showStats(Runnable runOnClose) {
         setUIDisabled(true);
 
         final Pair<Node, Controller> pair = SceneManager.loadFXML("Stats.fxml");

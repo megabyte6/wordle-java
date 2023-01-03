@@ -78,7 +78,7 @@
          </children>
       </HBox>
       <PieChart fx:id="guessDistribution" legendVisible="false" title="Guess Distribution" VBox.vgrow="ALWAYS" />
-      <Button mnemonicParsing="false" onAction="#close" prefWidth="100.0" text="Close">
+      <Button cancelButton="true" mnemonicParsing="false" onAction="#close" prefWidth="100.0" text="Close">
          <font>
             <Font size="14.0" />
          </font>
