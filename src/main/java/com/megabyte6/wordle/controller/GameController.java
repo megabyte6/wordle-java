@@ -150,11 +150,6 @@ public class GameController extends Controller {
         popup(message);
     }
 
-    private void checkGuess() {
-        checkGuess(() -> {
-        });
-    }
-
     private void checkGuess(Runnable runAfter) {
         String word = game.getCurrentWord();
         String guess = game.getCurrentGuess();
