@@ -39,9 +39,9 @@ import javafx.util.Duration;
 
 public class GameController extends Controller {
 
-    private final String CORRECT_COLOR = "#8FB935";
-    private final String WRONG_SPOT_COLOR = "#F8D75F";
-    private final String INCORRECT_COLOR = "#E64747";
+    private final String CORRECT_COLOR = "#1d8a0a";
+    private final String WRONG_SPOT_COLOR = "#c9a908";
+    private final String INCORRECT_COLOR = "#ad0c0c";
     private final CornerRadii CORNER_RADIUS = new CornerRadii(8);
     private final String[] WIN_MESSAGES = {
             "Genius",
@@ -279,7 +279,7 @@ public class GameController extends Controller {
 
         final int numberOfGamesPlayed = oldStats.numberOfGamesPlayed() + 1;
         final int numberOfWins = oldStats.numberOfWins();
-        final int currentWinStreak = oldStats.currentWinStreak();
+        final int currentWinStreak = 0;
         final int longestWinStreak = oldStats.longestWinStreak();
         final int[] guessDistribution = oldStats.guessDistribution();
 
