@@ -1,6 +1,7 @@
 package com.megabyte6.wordle.controller;
 
 import static com.megabyte6.wordle.util.Range.range;
+
 import static javafx.util.Duration.millis;
 
 import java.util.ArrayList;
