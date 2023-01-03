@@ -10,16 +10,16 @@
    <children>
       <Label text="Better luck next time!">
          <font>
-            <Font size="24.0" />
+            <Font name="Times New Roman" size="24.0" />
          </font></Label>
       <Label text="The word was...">
          <font>
-            <Font size="18.0" />
+            <Font name="Serif Regular" size="18.0" />
          </font>
       </Label>
-      <Label fx:id="correctWord">
+      <Label fx:id="correctWord" text="BONES">
          <font>
-            <Font size="64.0" />
+            <Font name="Serif Italic" size="64.0" />
          </font>
       </Label>
       <Button mnemonicParsing="false" onAction="#close" prefHeight="40.0" prefWidth="100.0" text="Continue">
