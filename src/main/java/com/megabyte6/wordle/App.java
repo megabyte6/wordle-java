@@ -12,6 +12,7 @@ import com.megabyte6.wordle.util.Stats;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -31,6 +32,7 @@ public class App extends Application {
 
         Scene scene = new Scene(FXMLLoader.load(getClass().getResource("view/Start.fxml")));
 
+        primaryStage.getIcons().add(new Image("icon.png"));
         primaryStage.setTitle("Wordle");
         primaryStage.setScene(scene);
         primaryStage.show();
