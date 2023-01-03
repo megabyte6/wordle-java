@@ -24,12 +24,16 @@ public class Range {
      * @return     An {@code int[]} of integers to loop through.
      */
     public static int[] range(int from, int to) {
-        if (from >= to)
+        if (from == to)
             return new int[] {};
 
-        int[] range = new int[to - from];
+        int[] range = new int[Math.abs(to - from)];
         for (int i = 0; i < range.length; i++) {
-            range[i] = from + i;
+            if (from > to) {
+                range[i] = to - i;
+            } else {
+                range[i] = from + i;
+            }
         }
 
         return range;
