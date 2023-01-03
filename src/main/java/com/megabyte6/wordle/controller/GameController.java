@@ -153,25 +153,53 @@ public class GameController extends Controller {
     private void checkGuess(Runnable runAfter) {
         String word = game.getCurrentWord();
         String guess = game.getCurrentGuess();
+        // Only add letters that aren't correct.
+        // Will be read to check for letters that are in the word but not in
+        // the right spot.
+        String lettersInWord = "";
 
+        String[] cellColors = new String[guess.length()];
         RotateTransition[] rotateTransitions = new RotateTransition[guess.length()];
 
+        // Correct color.
+        // Check correct letters first to avoid a bug with multiple-letter guesses showing
+        // incorrect colors.
         for (int i : range(guess.length())) {
-            Label cell = (Label) getNodeByPosition(game.getGuessCount(), i);
+            if (guess.charAt(i) != word.charAt(i)) {
+                // Remove from lettersInWord.
+                lettersInWord += word.charAt(i);
+                continue;
+            }
+            cellColors[i] = CORRECT_COLOR;
+        }
+
+        // Wrong spot and incorrect colors.
+        for (int i : range(guess.length())) {
+            if (cellColors[i] != null)
+                continue;
 
             String color;
-            if (guess.charAt(i) == word.charAt(i)) {
-                color = CORRECT_COLOR;
-            } else if (word.indexOf(guess.charAt(i)) != -1) {
+            if (lettersInWord.indexOf(guess.charAt(i)) != -1) {
                 color = WRONG_SPOT_COLOR;
+                // Remove letter from lettersInWord.
+                int index = lettersInWord.indexOf(guess.charAt(i));
+                lettersInWord = lettersInWord.substring(0, index)
+                        + lettersInWord.substring(index + 1);
             } else {
                 color = INCORRECT_COLOR;
             }
 
-            setKeyboardKey(guess.charAt(i), color);
+            cellColors[i] = color;
+        }
+
+        // Build animation.
+        for (int i : range(guess.length())) {
+            setKeyboardKey(guess.charAt(i), cellColors[i]);
+
+            Label cell = (Label) getNodeByPosition(game.getGuessCount(), i);
 
             final Background background = new Background(
-                    new BackgroundFill(Color.web(color), CORNER_RADIUS, null));
+                    new BackgroundFill(Color.web(cellColors[i]), CORNER_RADIUS, null));
 
             RotateTransition rotate2 = new RotateTransition(millis(200), cell);
             rotate2.setAxis(Rotate.X_AXIS);
@@ -187,8 +215,6 @@ public class GameController extends Controller {
 
             rotateTransitions[i] = rotate1;
         }
-
-        // Build animation.
         SequentialTransition sequentialTransition = new SequentialTransition();
         sequentialTransition.getChildren().addAll(rotateTransitions);
         sequentialTransition.setOnFinished(event -> {
