@@ -10,19 +10,22 @@
    <children>
       <Label text="Better luck next time!">
          <font>
-            <Font size="18.0" />
+            <Font size="24.0" />
          </font></Label>
       <Label text="The word was...">
          <font>
-            <Font size="14.0" />
+            <Font size="18.0" />
          </font>
       </Label>
       <Label fx:id="correctWord">
          <font>
-            <Font size="48.0" />
+            <Font size="64.0" />
          </font>
       </Label>
-      <Button mnemonicParsing="false" onAction="#close" prefHeight="40.0" text="Continue" />
+      <Button mnemonicParsing="false" onAction="#close" prefHeight="40.0" prefWidth="100.0" text="Continue">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
    </children>
    <stylesheets>
       <URL value="@../css/style-dark.css" />
