@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.PieChart;
 import javafx.scene.chart.PieChart.Data;
 import javafx.scene.control.Label;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Tooltip;
 import javafx.scene.layout.VBox;
 
 public class StatsController extends Controller {
@@ -42,24 +42,31 @@ public class StatsController extends Controller {
 
         ObservableList<Data> guessDistributionData = FXCollections.observableArrayList();
         for (var i : range(App.stats.guessDistribution().length)) {
-            int guessCount = App.stats.guessDistribution()[i];
-            if (guessCount == 0)
+            final int winCount = App.stats.guessDistribution()[i];
+            if (winCount == 0)
                 continue;
-            guessDistributionData.add(new Data(Integer.toString(i), guessCount));
+
+            final Data data = new Data(i + " attempt", winCount);
+            // Check if words should be plural.
+            if (i > 1)
+                data.setName(data.getName() + "s");
+
+            guessDistributionData.add(data);
         }
         guessDistribution.setData(guessDistributionData);
 
-        final Label caption = new Label();
-        root.getChildren().add(caption);
-        guessDistribution.getData().stream()
-                .forEach(data -> {
-                    data.getNode().addEventHandler(MouseEvent.MOUSE_PRESSED, (event) -> {
-                        caption.setTranslateX(event.getSceneX());
-                        caption.setTranslateY(event.getSceneY());
-                        caption.setText("# of guesses: " + data.getName() + "\n"
-                                + "# of wins: " + data.getPieValue());
-                    });
-                });
+        // Add tooltips to show on hover for the pie chart.
+        guessDistribution.getData().forEach(data -> {
+            final String guessCount = data.getName().substring(0, 1);
+            final int winCount = App.stats.guessDistribution()[Integer.valueOf(guessCount)];
+            final Tooltip tooltip = new Tooltip(winCount + " win");
+            tooltip.setStyle("-fx-font-size: 14");
+            // Check if words should be plural.
+            if (winCount > 1)
+                tooltip.setText(tooltip.getText() + "s");
+
+            Tooltip.install(data.getNode(), tooltip);
+        });
     }
 
     @FXML

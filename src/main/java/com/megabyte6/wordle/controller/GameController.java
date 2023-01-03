@@ -182,30 +182,32 @@ public class GameController extends Controller {
         // Build animation.
         SequentialTransition sequentialTransition = new SequentialTransition();
         sequentialTransition.getChildren().addAll(rotateTransitions);
-        sequentialTransition.setOnFinished(event -> runAfter.run());
+        sequentialTransition.setOnFinished(event -> {
+            // Unlock keyboard.
+            uiDisabled = false;
+
+            runAfter.run();
+        });
+
+        // Disable keyboard.
+        uiDisabled = true;
 
         // Perform animation.
         sequentialTransition.play();
     }
 
-    private void disableUI() {
+    private void setUIDisabled(boolean disabled) {
         keyboard.getChildren().forEach(hbox -> ((HBox) hbox).getChildren()
-                .forEach(key -> ((Button) key).setDisable(true)));
-        root.getChildren().get(0).setOpacity(0.5);
+                .forEach(key -> ((Button) key).setDisable(disabled)));
+        root.getChildren().get(0).setOpacity(disabled
+                ? 0.5
+                : 1);
 
-        uiDisabled = true;
-    }
-
-    private void enableUI() {
-        keyboard.getChildren().forEach(hbox -> ((HBox) hbox).getChildren()
-                .forEach(key -> ((Button) key).setDisable(false)));
-        root.getChildren().get(0).setOpacity(1);
-
-        uiDisabled = false;
+        uiDisabled = disabled;
     }
 
     public void showStats(Runnable runOnClose) {
-        disableUI();
+        setUIDisabled(true);
 
         final Pair<Node, Controller> pair = SceneManager.loadFXML("Stats.fxml");
         final Node content = pair.a();
@@ -215,7 +217,7 @@ public class GameController extends Controller {
         controller.initialize();
         controller.runOnClose(() -> {
             root.getChildren().remove(content);
-            enableUI();
+            setUIDisabled(false);
 
             runOnClose.run();
         });
@@ -251,7 +253,7 @@ public class GameController extends Controller {
 
     private void gameLost() {
         game.setGameOver(true);
-        disableUI();
+        setUIDisabled(true);
 
         // Update stats.
         final Stats oldStats = App.stats;
@@ -277,7 +279,7 @@ public class GameController extends Controller {
         controller.setCorrectWord(game.getCurrentWord());
         controller.runOnClose(() -> {
             root.getChildren().remove(content);
-            enableUI();
+            setUIDisabled(false);
 
             // Show stats and reset the game.
             showStats(() -> {

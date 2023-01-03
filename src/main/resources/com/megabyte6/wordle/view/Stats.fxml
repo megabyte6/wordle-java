@@ -13,7 +13,7 @@
    <children>
       <Label text="Statistics">
          <font>
-            <Font size="18.0" />
+            <Font size="24.0" />
          </font>
       </Label>
       <HBox alignment="CENTER" prefHeight="200.0" prefWidth="200.0" spacing="10.0">
@@ -22,41 +22,62 @@
                <children>
                   <Label fx:id="gamesPlayed" text="0">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="36.0" />
                      </font></Label>
-                  <Label text="Played" />
+                  <Label text="Played">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
                </children>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Label fx:id="winPercentage" text="0">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="36.0" />
                      </font></Label>
-                  <Label text="Win %" />
+                  <Label text="Win %">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
                </children>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Label fx:id="currentStreak" text="0">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="36.0" />
                      </font></Label>
-                  <Label text="Win Streak" />
+                  <Label text="Win Streak">
+                     <font>
+                        <Font size="14.0" />
+                     </font></Label>
                </children>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
             </VBox>
             <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                <children>
                   <Label fx:id="longestStreak" text="0">
                      <font>
-                        <Font size="24.0" />
+                        <Font size="36.0" />
                      </font></Label>
                   <Label text="Longest Streak" />
                </children>
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
             </VBox>
          </children>
       </HBox>
-      <PieChart fx:id="guessDistribution" labelsVisible="false" legendVisible="false" title="Guess Distribution" VBox.vgrow="ALWAYS" />
+      <PieChart fx:id="guessDistribution" legendVisible="false" title="Guess Distribution" VBox.vgrow="ALWAYS" />
       <Button mnemonicParsing="false" onAction="#close" prefWidth="100.0" text="Close">
          <font>
             <Font size="14.0" />
