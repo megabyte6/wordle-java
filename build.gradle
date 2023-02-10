@@ -1,4 +1,6 @@
 plugins {
+    // Apply the java plugin for better toolchain support.
+    id 'java'
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     // Apply javafxplugin for JavaFX support.
@@ -42,6 +44,12 @@ repositories {
 }
 
 dependencies {
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
 }
 
 application {
