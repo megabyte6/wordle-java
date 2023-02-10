@@ -1,4 +1,4 @@
-package com.megabyte6.connect4.util;
+package com.megabyte6.wordle.util;
 
 public class Range {
 
