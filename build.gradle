@@ -2,7 +2,7 @@ plugins {
     // Apply the application plugin to add support for building a CLI application in Java.
     id 'application'
     // Apply javafxplugin for JavaFX support.
-    id 'org.openjfx.javafxplugin' version '0.0.11'
+    id 'org.openjfx.javafxplugin' version '0.0.13'
     // Apply jlink for building the app.
     id 'org.beryx.jlink' version '2.25.0'
 }
@@ -16,9 +16,22 @@ ext {
     // Set the version of JavaFX to use.
     javafxVersion = 19
 
-    // Compile target for the jPackage task.
+    // Compile target for jlink.
+    // Options: linux-aarch64, linux-x64, macos-aarch64, macos-x64, win-x64, all.
+    jlinkTargetPlatform = 'win-x64'
+
+    // Compile target for jpackage.
     // Options: linux-aarch64, linux-x64, macos-aarch64, macos-x64, win-x64.
     jpackageTargetPlatform = 'win-x64'
+
+    // Links for downloading jdks.
+    jdkLinks = [
+            'linux-aarch64': 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_aarch64_linux_hotspot_17.0.6_10.tar.gz',
+            'linux-x64'    : 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_x64_linux_hotspot_17.0.6_10.tar.gz',
+            'macos-aarch64': 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_aarch64_mac_hotspot_17.0.6_10.tar.gz',
+            'macos-x64'    : 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_x64_mac_hotspot_17.0.6_10.tar.gz',
+            'win-x64'      : 'https://github.com/adoptium/temurin17-binaries/releases/download/jdk-17.0.6%2B10/OpenJDK17U-jdk_x64_windows_hotspot_17.0.6_10.zip'
+    ]
 }
 
 version = appVersion
@@ -39,46 +52,40 @@ application {
 
 javafx {
     version = javafxVersion
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    modules = ['javafx.controls', 'javafx.fxml']
 }
 
 jlink {
     options = [
-        '--strip-debug',
-        '--compress', '2',
-        '--no-header-files',
-        '--no-man-pages'
+            '--strip-debug',
+            '--compress', '2',
+            '--no-header-files',
+            '--no-man-pages'
     ]
     launcher {
         noConsole = true
     }
     imageZip = file("$buildDir/wordle.zip")
 
-    targetPlatform('linux-aarch64') {
-        jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_aarch64_linux_hotspot_19.0.1_10.tar.gz')
-        addExtraModulePath('jmods/linux/aarch64')
-    }
-    targetPlatform('linux-x64') {
-        jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_x64_linux_hotspot_19.0.1_10.tar.gz')
-        addExtraModulePath('jmods/linux/x64')
-    }
-    targetPlatform('macos-aarch64') {
-        jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_aarch64_mac_hotspot_19.0.1_10.tar.gz')
-        addExtraModulePath('jmods/macos/aarch64')
-    }
-    targetPlatform('macos-x64') {
-        jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_x64_mac_hotspot_19.0.1_10.tar.gz')
-        addExtraModulePath('jmods/macos/x64')
-    }
-    targetPlatform('win-x64') {
-        jdkHome = jdkDownload('https://github.com/adoptium/temurin19-binaries/releases/download/jdk-19.0.1%2B10/OpenJDK19U-jdk_x64_windows_hotspot_19.0.1_10.zip')
-        addExtraModulePath('jmods/win/x64')
+    if (jlinkTargetPlatform == 'all') {
+        // Run all cases.
+        jdkLinks.each { key, value ->
+            targetPlatform(key) {
+                jdkHome = jdkDownload(value)
+                addExtraModulePath('jmods/' + key.split('-').join('/'))
+            }
+        }
+    } else {
+        targetPlatform(jlinkTargetPlatform) {
+            jdkHome = jdkDownload(jdkLinks[jlinkTargetPlatform])
+            addExtraModulePath('jmods/' + jlinkTargetPlatform.split('-').join('/'))
+        }
     }
 
     jpackage {
         targetPlatformName = jpackageTargetPlatform
         imageName = 'Wordle'
-        installerName = 'Wordle-installer'
+        installerName = 'wordle-installer'
         icon = 'src/main/resources/icon.ico'
         vendor = 'Brayden Chan'
 
