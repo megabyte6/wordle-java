@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="root" stylesheets="@../css/style-dark.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.megabyte6.wordle.controller.GameController">
+<StackPane fx:id="root" stylesheets="@../css/style-dark.css" xmlns="http://javafx.com/javafx/25.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.megabyte6.wordle.controller.GameController">
    <children>
       <AnchorPane>
          <children>

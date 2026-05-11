@@ -1,10 +1,11 @@
 package com.megabyte6.wordle.util;
 
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.net.URISyntaxException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.stream.Collectors;
 
 public class WordManager {
 
-    private List<String> dictionary;
+    private final List<String> dictionary;
     private List<String> words;
     private List<String> usedWords;
 
@@ -33,30 +34,16 @@ public class WordManager {
 
     private List<String> readFile(URL url) {
         List<String> content = new LinkedList<>();
-        try {
-            content = readFile(Path.of(url.toURI()));
-        } catch (URISyntaxException e) {
-            System.err.println(
-                    "ERROR: URL is not formatted correctly and cannot be converted to a URI");
-            e.printStackTrace();
+        if (url == null) {
+            System.err.println("ERROR: resource URL is null");
+            return content;
         }
-        return content;
-    }
 
-    private List<String> readFile(Path path) {
-        return readFile(path, false);
-    }
-
-    private List<String> readFile(Path path, boolean printContent) {
-        List<String> content = new LinkedList<>();
-
-        try {
-            content = Files.readAllLines(path);
-
-            if (printContent)
-                content.forEach(System.out::println);
+        try (InputStream in = url.openStream()) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
+            content = reader.lines().collect(Collectors.toCollection(LinkedList::new));
         } catch (IOException e) {
-            System.err.println("ERROR: failed to read file.");
+            System.err.println("ERROR: failed to read resource");
             e.printStackTrace();
         }
 

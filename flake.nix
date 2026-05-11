@@ -7,7 +7,7 @@
   };
 
   outputs = {self, ...} @ inputs: let
-    javaVersion = 17;
+    javaVersion = 25;
 
     libPathFor = pkgs:
       pkgs.lib.makeLibraryPath [

@@ -1,8 +1,8 @@
 plugins {
     id("java")
     id("application")
-    id("org.openjfx.javafxplugin") version "0.0.13"
-    id("org.beryx.jlink") version "2.25.0"
+    id("org.openjfx.javafxplugin") version "0.1.0"
+    id("org.beryx.jlink") version "4.0.0"
 }
 
 val appVersion: String by project
@@ -20,8 +20,14 @@ dependencies {
 
 java {
     toolchain {
-        languageVersion.set(JavaLanguageVersion.of(17))
+        languageVersion.set(JavaLanguageVersion.of(25))
     }
+    modularity.inferModulePath.set(true)
+}
+
+// Prevent Gradle from adding its own `--module-path` for the "run" task
+tasks.named<JavaExec>("run") {
+    modularity.inferModulePath.set(false)
 }
 
 application {
@@ -37,7 +43,6 @@ javafx {
 jlink {
     options.set(listOf(
         "--strip-debug",
-        "--compress", "2",
         "--no-header-files",
         "--no-man-pages",
     ))
@@ -50,7 +55,6 @@ jlink {
     jpackage {
         imageName = "Wordle"
         installerName = "wordle-installer"
-        icon = "src/main/resources/icon.ico"
         vendor = "Brayden Chan"
 
         installerOptions = if (jpackageFormat != "default") {
@@ -59,15 +63,35 @@ jlink {
             emptyList()
         }
 
-        if ("Windows" in System.getProperty("os.name")) {
-            installerOptions.addAll(listOf(
-                "--win-dir-chooser",
-                "--win-menu",
-                "--win-menu-group", "Wordle",
-                "--win-per-user-install",
-                "--win-shortcut",
-                "--win-shortcut-prompt",
-            ))
+        val osName = System.getProperty("os.name").lowercase()
+        when {
+            "windows" in osName -> {
+                icon = "src/main/resources/logo.ico"
+                installerOptions.addAll(listOf(
+                    "--win-dir-chooser",
+                    "--win-help-url", "https://github.com/megabyte6/wordle-java/issues",
+                    "--win-menu",
+                    "--win-menu-group", "Wordle",
+                    "--win-per-user-install",
+                    "--win-shortcut",
+                    "--win-shortcut-prompt",
+                    "--win-update-url", "https://github.com/megabyte6/wordle-java/releases/latest",
+                ))
+            }
+            "linux" in osName -> {
+                icon = "src/main/resources/logo.png"
+                installerOptions.addAll(listOf(
+                    "--linux-package-name", "connect-4",
+                    "--linux-menu-group", "Connect 4",
+                    "--linux-shortcut"
+                ))
+            }
+            "mac" in osName -> {
+                icon = "src/main/resources/logo.icns"
+            }
+            else -> {
+                icon = "src/main/resources/logo.png"
+            }
         }
     }
 }
