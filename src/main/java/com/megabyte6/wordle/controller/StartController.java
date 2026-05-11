@@ -7,6 +7,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 
@@ -23,7 +24,10 @@ public class StartController extends Controller {
     }
 
     @FXML
-    private void statsButtonPressed(ActionEvent event) {
+    private void statsButtonPressed(MouseEvent event) {
+        if (event != null)
+            event.consume();
+
         showStats();
     }
 
