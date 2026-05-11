@@ -1,0 +1,141 @@
+name: Build release artifacts
+
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+
+jobs:
+  build-release-artifacts:
+    name: ${{ matrix.os }}-${{ matrix.arch }}
+    runs-on: ${{ matrix.runner }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: linux
+            arch: amd64
+            runner: ubuntu-24.04
+            gradle: ./gradlew
+          - os: linux
+            arch: arm64
+            runner: ubuntu-24.04-arm
+            gradle: ./gradlew
+          - os: windows
+            arch: amd64
+            runner: windows-latest
+            gradle: .\gradlew.bat
+          - os: macos
+            arch: amd64
+            runner: macos-26-intel
+            gradle: ./gradlew
+          - os: macos
+            arch: arm64
+            runner: macos-26
+            gradle: ./gradlew
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v6
+
+      - name: Ensure Gradle wrapper is executable
+        if: matrix.os != 'windows'
+        run: chmod +x ./gradlew
+
+      - name: Read app version
+        shell: bash
+        run: |
+          version="$(grep -E '^appVersion\s*=' gradle.properties | cut -d'=' -f2 | tr -d '[:space:]')"
+          echo "APP_VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Build package
+        run: ${{ matrix.gradle }} jpackage
+
+      - name: Zip portable archive
+        if: matrix.os != 'windows'
+        run: |
+          cd build/jpackage
+          zip -r wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}_portable.zip Wordle*
+
+      - name: Zip portable archive (Windows)
+        if: matrix.os == 'windows'
+        run: |
+          cd build\jpackage
+          Compress-Archive -Path 'Wordle' -DestinationPath wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}_portable.zip
+
+      - name: Upload portable archive
+        uses: actions/upload-artifact@v7
+        with:
+          path: build/jpackage/wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}_portable.zip
+          if-no-files-found: error
+          archive: false
+
+      - name: Rename package (Windows)
+        if: matrix.os == 'windows'
+        run: |
+          Rename-Item build\jpackage\*.msi -NewName wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.msi
+          Rename-Item build\jpackage\*.exe -NewName wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.exe
+      - name: Upload package (msi)
+        if: matrix.os == 'windows'
+        uses: actions/upload-artifact@v7
+        with:
+          path: build/jpackage/wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.msi
+          if-no-files-found: error
+          archive: false
+      - name: Upload package (exe)
+        if: matrix.os == 'windows'
+        uses: actions/upload-artifact@v7
+        with:
+          path: build/jpackage/wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.exe
+          if-no-files-found: error
+          archive: false
+
+      - name: Rename package (Linux)
+        if: matrix.os == 'linux'
+        run: |
+          mv build/jpackage/*.deb build/jpackage/wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.deb
+          mv build/jpackage/*.rpm build/jpackage/wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.rpm
+      - name: Upload package (deb)
+        if: matrix.os == 'linux'
+        uses: actions/upload-artifact@v7
+        with:
+          path: build/jpackage/wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.deb
+          if-no-files-found: error
+          archive: false
+      - name: Upload package (rpm)
+        if: matrix.os == 'linux'
+        uses: actions/upload-artifact@v7
+        with:
+          path: build/jpackage/wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.rpm
+          if-no-files-found: error
+          archive: false
+
+      - name: Rename package (macOS)
+        if: matrix.os == 'macos'
+        run: |
+          mv build/jpackage/*.dmg build/jpackage/wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.dmg
+          mv build/jpackage/*.pkg build/jpackage/wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.pkg
+      - name: Upload package (dmg)
+        if: matrix.os == 'macos'
+        uses: actions/upload-artifact@v7
+        with:
+          path: build/jpackage/wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.dmg
+          if-no-files-found: error
+          archive: false
+      - name: Upload package (pkg)
+        if: matrix.os == 'macos'
+        uses: actions/upload-artifact@v7
+        with:
+          path: build/jpackage/wordle_${{ env.APP_VERSION }}_${{ matrix.os }}-${{ matrix.arch }}.pkg
+          if-no-files-found: error
+          archive: false
