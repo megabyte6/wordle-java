@@ -6,13 +6,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.SVGPath?>
 <?import javafx.scene.text.Font?>
 
 <StackPane fx:id="root" stylesheets="@../css/style-dark.css" xmlns="http://javafx.com/javafx/25.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.megabyte6.wordle.controller.StartController">
    <children>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
+      <AnchorPane>
          <children>
-            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <Label text="Welcome to Wordle">
                      <font>
@@ -37,7 +38,7 @@
                   </Button>
                </children>
             </VBox>
-            <Button mnemonicParsing="false" onAction="#statsButtonPressed" text="🏆" AnchorPane.rightAnchor="20.0" AnchorPane.topAnchor="20.0" />
+            <SVGPath accessibleText="Stats" content="m 1.019531 0.996094 v 6 c 0 1.648437 1.351563 3 3 3 h 0.542969 c 0.535156 0.925781 1.421875 1.601562 2.457031 1.867187 v 1.132813 h -2 c 0 0.5 -0.449219 1 -1 1 v 1 h 8 v -1 c -0.507812 0 -1 -0.421875 -1 -1 h -2 v -1.132813 c 1.035157 -0.269531 1.921875 -0.941406 2.457031 -1.867187 h 0.542969 c 1.644531 0 3 -1.351563 3 -3 v -6 z m 2 2 h 1 v 5 c -0.519531 0 -1 -0.480469 -1 -1 z m 9 0 h 1 v 4 c 0 0.519531 -0.480469 1 -1 1 z m 0 0" onMouseClicked="#statsButtonPressed" pickOnBounds="true" scaleX="1.5" scaleY="1.5" styleClass="svg-path" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="25.0" />
          </children>
       </AnchorPane>
    </children>

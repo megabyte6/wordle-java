@@ -15,3 +15,11 @@
 .button:hover {
     -fx-background-color: #1B3B47;
 }
+
+.svg-path {
+    -fx-fill: #8FAFBB;
+}
+
+.svg-path:hover {
+    -fx-fill: #AFCFDB;
+}
