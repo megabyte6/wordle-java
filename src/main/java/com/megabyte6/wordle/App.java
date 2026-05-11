@@ -32,7 +32,7 @@ public class App extends Application {
 
         Scene scene = new Scene(FXMLLoader.load(getClass().getResource("view/Start.fxml")));
 
-        primaryStage.getIcons().add(new Image("icon.png"));
+        primaryStage.getIcons().add(new Image("logo.png"));
         primaryStage.setTitle("Wordle");
         primaryStage.setScene(scene);
         primaryStage.show();
