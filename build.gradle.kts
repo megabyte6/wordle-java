@@ -49,20 +49,17 @@ jlink {
     launcher {
         noConsole = true
     }
-
     imageZip.set(layout.buildDirectory.file("wordle.zip"))
 
     jpackage {
         imageName = "Wordle"
-        installerName = "wordle-installer"
+        installerName = "wordle"
         vendor = "Brayden Chan"
-
         installerOptions = if (jpackageFormat != "default") {
             listOf("--type", jpackageFormat)
         } else {
             emptyList()
         }
-
         val osName = System.getProperty("os.name").lowercase()
         when {
             "windows" in osName -> {
@@ -81,8 +78,8 @@ jlink {
             "linux" in osName -> {
                 icon = "src/main/resources/logo.png"
                 installerOptions.addAll(listOf(
-                    "--linux-package-name", "connect-4",
-                    "--linux-menu-group", "Connect 4",
+                    "--linux-package-name", "wordle",
+                    "--linux-menu-group", "Wordle",
                     "--linux-shortcut"
                 ))
             }
