@@ -2,7 +2,7 @@ plugins {
     id("java")
     id("application")
     id("org.openjfx.javafxplugin") version "0.1.0"
-    id("org.beryx.jlink") version "2.25.0"
+    id("org.beryx.jlink") version "4.0.0"
 }
 
 val appVersion: String by project
@@ -22,6 +22,12 @@ java {
     toolchain {
         languageVersion.set(JavaLanguageVersion.of(25))
     }
+    modularity.inferModulePath.set(true)
+}
+
+// Prevent Gradle from adding its own `--module-path` for the "run" task
+tasks.named<JavaExec>("run") {
+    modularity.inferModulePath.set(false)
 }
 
 application {
